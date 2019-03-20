@@ -10,5 +10,5 @@ GCC v4.9 or later
 
 Clang v3.8 or later
 
-If you're using Windows platform, Windows 10 is preferred.
+If you're using Windows platform, Windows 10 is preferred. If you compile the project with GCC or Clang, just use `-std=gnu11` compile option.
 
