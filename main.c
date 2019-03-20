@@ -1,4 +1,4 @@
-﻿//
+//
 //  main.c
 //  FoundationBasedAlgorithms
 //
@@ -265,29 +265,29 @@ static void MemoryProfileTest(void)
 */
 void GetDefaultStringFromUTF8String(char dst[], const char *pUTF8Str)
 {
-	if (dst == NULL || pUTF8Str == NULL)
-		return;
+    if (dst == NULL || pUTF8Str == NULL)
+        return;
 
-	const int utfStrLen = (int)strlen(pUTF8Str);
-	if (utfStrLen == 0)
-	{
-		dst[0] = '\0';
-		return;
-	}
+    const int utfStrLen = (int)strlen(pUTF8Str);
+    if (utfStrLen == 0)
+    {
+        dst[0] = '\0';
+        return;
+    }
 
-	// 先将UTF-8字符串转为UTF-16字符串
-	const int wideStrLen = MultiByteToWideChar(CP_UTF8, 0, pUTF8Str, utfStrLen, NULL, 0);
-	char16_t *wideChars = malloc(wideStrLen * sizeof(*wideChars));
+    // 先将UTF-8字符串转为UTF-16字符串
+    const int wideStrLen = MultiByteToWideChar(CP_UTF8, 0, pUTF8Str, utfStrLen, NULL, 0);
+    char16_t *wideChars = malloc(wideStrLen * sizeof(*wideChars));
 
-	// 再将UTF-16字符串转为系统默认可显字符集的字符串
-	MultiByteToWideChar(CP_UTF8, 0, pUTF8Str, utfStrLen, wideChars, wideStrLen);
+    // 再将UTF-16字符串转为系统默认可显字符集的字符串
+    MultiByteToWideChar(CP_UTF8, 0, pUTF8Str, utfStrLen, wideChars, wideStrLen);
 
-	const int dstLen = WideCharToMultiByte(CP_ACP, 0, wideChars, wideStrLen, NULL, 0, NULL, NULL);
-	WideCharToMultiByte(CP_ACP, 0, wideChars, wideStrLen, dst, dstLen, NULL, NULL);
+    const int dstLen = WideCharToMultiByte(CP_ACP, 0, wideChars, wideStrLen, NULL, 0, NULL, NULL);
+    WideCharToMultiByte(CP_ACP, 0, wideChars, wideStrLen, dst, dstLen, NULL, NULL);
 
-	dst[dstLen] = '\0';
+    dst[dstLen] = '\0';
 
-	free(wideChars);
+    free(wideChars);
 }
 
 /*
@@ -298,56 +298,56 @@ void GetDefaultStringFromUTF8String(char dst[], const char *pUTF8Str)
 */
 void GetByteStringFromUTF16String(char dst[], const char16_t *utf16Str, bool useUTF8)
 {
-	if (dst == NULL || utf16Str == NULL)
-		return;
+    if (dst == NULL || utf16Str == NULL)
+        return;
 
-	const unsigned codePage = useUTF8 ? CP_UTF8 : CP_ACP;
-	const int len = WideCharToMultiByte(codePage, 0, utf16Str, -1, NULL, 0, NULL, NULL);
+    const unsigned codePage = useUTF8 ? CP_UTF8 : CP_ACP;
+    const int len = WideCharToMultiByte(codePage, 0, utf16Str, -1, NULL, 0, NULL, NULL);
 
-	WideCharToMultiByte(codePage, 0, utf16Str, -1, dst, len, NULL, NULL);
-	dst[len] = '\0';
+    WideCharToMultiByte(codePage, 0, utf16Str, -1, dst, len, NULL, NULL);
+    dst[len] = '\0';
 }
 
 static void SystemTest(void)
 {
-	const char *currDir = zf_get_current_exec_path();
+    const char *currDir = zf_get_current_exec_path();
 #ifdef _WIN32
 
-	char path[512];
-	GetDefaultStringFromUTF8String(path, currDir);
-	currDir = path;
+    char path[512];
+    GetDefaultStringFromUTF8String(path, currDir);
+    currDir = path;
 
 #endif // _WIN32
 
-	printf("The current directory is: %s\n", currDir);
+    printf("The current directory is: %s\n", currDir);
 
-	const char *dir = u8"C:/Users/zenny/Desktop/测试目录";
-	if (zf_create_directory(dir))
-		puts("The directory is created!");
+    const char *dir = u8"C:/Users/zenny/Desktop/测试目录";
+    if (zf_create_directory(dir))
+        puts("The directory is created!");
 }
 
 int main(int argc, const char * argv[])
 {
     // insert code here...
 
-	const char16_t *sourceStr = u"你好，世界！Hello, world!";
+    const char16_t *sourceStr = u"你好，世界！Hello, world!";
 
-	char dstStr[64] = { '\0' };
-	GetByteStringFromUTF16String(dstStr, sourceStr, false);
+    char dstStr[64] = { '\0' };
+    GetByteStringFromUTF16String(dstStr, sourceStr, false);
 
-	printf("The string code is: %04X\n", sourceStr[0]);
-	printf("The string is: %s\n", dstStr);
+    printf("The string code is: %04X\n", sourceStr[0]);
+    printf("The string is: %s\n", dstStr);
 
-	GetDefaultStringFromUTF8String(dstStr, u8"你");
-	printf("The string is: %s\n", dstStr);
+    GetDefaultStringFromUTF8String(dstStr, u8"你");
+    printf("The string is: %s\n", dstStr);
 
-	const char *utf8Str = u8"你";
-	size_t length = strlen(utf8Str);
-	printf("The string code is: ");
-	for (size_t i = 0; i < length; i++)
-		printf("%02X", (uint8_t)utf8Str[i]);
+    const char *utf8Str = u8"你";
+    size_t length = strlen(utf8Str);
+    printf("The string code is: ");
+    for (size_t i = 0; i < length; i++)
+        printf("%02X", (uint8_t)utf8Str[i]);
 
-	puts("");
+    puts("");
 
     int array[] = { 1, 2, 3, 4, 5 };
     const ssize_t count = zf_countof(array);
