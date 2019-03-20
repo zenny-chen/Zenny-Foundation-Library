@@ -39,15 +39,14 @@ static void Test(void)
     ZF_CREATE_SINGLE_LINK_TABLE(table);
 
     printf("The table class is: %s\n", ZF_OBJECT_DESC(table));
-
-	struct ZFNumber *number = NULL;
-	ZF_CREATE_NUMBER(number, (union ZFNumberValueType) { .b = true }, ZF_NUMBER_ENCODING_BOOL);
+    struct ZFNumber *number = NULL;
+    ZF_CREATE_NUMBER(number, (union ZFNumberValueType) { .b = true }, ZF_NUMBER_ENCODING_BOOL);
     struct ZFSingleLinkNode *node1 = NULL;
     ZF_CREATE_SINGLE_LINK_NODE(node1, (struct ZFObject*)number);
     ZF_RELEASE_OBJECT(number);
     printf("The node1 class is: %s\n", ZF_OBJECT_DESC(node1));
 
-	ZF_CREATE_NUMBER(number, (union ZFNumberValueType) {.A = 2}, ZF_NUMBER_ENCODING_UBYTE);
+    ZF_CREATE_NUMBER(number, (union ZFNumberValueType) {.A = 2}, ZF_NUMBER_ENCODING_UBYTE);
     struct ZFSingleLinkNode *node2 = NULL;
     ZF_CREATE_SINGLE_LINK_NODE(node2, (struct ZFObject*)number);
     ZF_RELEASE_OBJECT(number);
@@ -76,7 +75,7 @@ static void Test(void)
     struct ZFSingleLinkNode *node4 = NULL;
     ZF_CREATE_SINGLE_LINK_NODE(node4, NULL);
 
-	ssize_t index = ZFFindSingleLinkNode(table, node4);
+    ssize_t index = ZFFindSingleLinkNode(table, node4);
     printf("node4 index is: %td\n", index);
     ZFRemoveSingleLinkNode(table, node4);
 
@@ -84,8 +83,8 @@ static void Test(void)
 
     for (struct ZFSingleLinkNode *iter = ZFSingleLinkNodeIteratorBegin(table); iter != NULL; iter = ZFSingleLinkNodeIteratorNext(iter))
     {
-		struct ZFObject *data = iter->data;
-        if (data->identifier == ZENNY_NUMBER_IDENTIFIER)
+        struct ZFObject *data = iter->data;
+        if(data->identifier == ZENNY_NUMBER_IDENTIFIER)
         {
             char desc[64] = { '\0' };
             number = (struct ZFNumber*)data;
@@ -107,8 +106,8 @@ static void Test(void)
     printf("obj class is: %s\n", ZFGetObjectDescription(obj, MyGetDesc));
     ZF_RELEASE_OBJECT(obj);
 
-	ZF_CREATE_NUMBER(number, (union ZFNumberValueType) { .u = u'h' }, ZF_NUMBER_ENCODING_CHAR16);
-	char16_t u16Value = number->value.u;
+    ZF_CREATE_NUMBER(number, (union ZFNumberValueType) { .u = u'h' }, ZF_NUMBER_ENCODING_CHAR16);
+    char16_t u16Value = number->value.u;
     printf("The UTF-16 value is: %.4X\n", u16Value);
     ZF_RELEASE_OBJECT(number);
 
@@ -131,7 +130,7 @@ struct Parent
 
 static void MyDeallocParent(struct ZFObject *obj)
 {
-	struct Parent* parent = (struct Parent*)obj;
+    struct Parent* parent = (struct Parent*)obj;
     if (parent->identifier != 0x1000)
         return;
 
@@ -169,7 +168,7 @@ struct Child
 
 static void MyDeallocChild(struct ZFObject *obj)
 {
-	struct Child* child = (struct Child*)obj;
+    struct Child* child = (struct Child*)obj;
     if (child->identifier != 0x1001)
         return;
 
@@ -212,7 +211,7 @@ static void MemoryProfileTest(void)
     ZF_CREATE_NUMBER(num, (union ZFNumberValueType) { .i = -550 }, ZF_NUMBER_ENCODING_INT);
     ZF_RELEASE_OBJECT(num); // TEST
 
-	ZF_CREATE_NUMBER(num, (union ZFNumberValueType) { .I = 90U }, ZF_NUMBER_ENCODING_UINT);
+    ZF_CREATE_NUMBER(num, (union ZFNumberValueType) { .I = 90U }, ZF_NUMBER_ENCODING_UINT);
 
     void *mem = NULL;
     ZF_MALLOC(mem, 128);
