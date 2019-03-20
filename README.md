@@ -5,7 +5,9 @@ It contains some basic containers which are based on reference counting. It also
 
 ## Compilers requirement:
 MSVC v14 with Visual Studio 2017 or later
+
 GCC v4.9 or later
+
 Clang v3.8 or later
 
 If you're using Windows platform, Windows 10 is preferred.
