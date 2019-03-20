@@ -376,14 +376,14 @@ int main(int argc, const char * argv[])
             Test();
             puts("----------------");
             
-			InheritageTest();
+            InheritageTest();
             puts("----------------");
             
-			MemoryProfileTest();
+            MemoryProfileTest();
             puts("----------------\n");
-
-			SystemTest();
-			puts("----------------\n");
+            
+            SystemTest();
+            puts("----------------\n");
         }
     }
     
