@@ -16,8 +16,13 @@
 extern const char* zf_get_current_exec_path(void);
 
 /// Create the directory at the specified path.
-/// @return true if successful; Otherwise, false.
+/// @param path the path of the directory
+/// @return true if create successfully or the directory already exists; Otherwise, false.
 extern bool zf_create_directory(const char *path);
+
+/// Remove the specified directory and all its contents
+/// @param path the path of the directory
+extern void zf_remove_directory(const char *path);
 
 #endif /* zf_directory_h */
 
