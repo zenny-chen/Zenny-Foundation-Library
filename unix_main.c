@@ -284,7 +284,7 @@ int main(int argc, const char* argv[])
         size_t len = 0;
         getline(&contents, &len, stdin);
         
-        if(strcmp(contents, "exit") == 0)
+        if(strcmp(contents, "exit\n") == 0)
             break;
         
         Test();
@@ -303,6 +303,6 @@ int main(int argc, const char* argv[])
         
         puts("----------------\n");
     }
-    while(false);
+    while(true);
 }
 
