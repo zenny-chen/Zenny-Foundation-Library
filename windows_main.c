@@ -258,11 +258,11 @@ static void MemoryProfileTest(void)
 }
 
 /* 
- 从指定的UTF-8字符串获得系统默认字符集的可显字符串
- @param dst 用于存放目标系统默认字符集可显字符串的缓存
- @param pUTF8Str 指向一串UTF-8字符串
+ Get system default characters from UTf-8 string
+ @param dst the buffer that stores the system default characters
+ @param pUTF8Str the specified UTF-8 string
 */
-void GetDefaultStringFromUTF8String(char dst[], const char *pUTF8Str)
+static void GetDefaultStringFromUTF8String(char dst[], const char *pUTF8Str)
 {
     if (dst == NULL || pUTF8Str == NULL)
         return;
@@ -274,11 +274,11 @@ void GetDefaultStringFromUTF8String(char dst[], const char *pUTF8Str)
         return;
     }
 
-    // 先将UTF-8字符串转为UTF-16字符串
+    // Firstly, convert the UTF-8 string to UTF-16 string
     const int wideStrLen = MultiByteToWideChar(CP_UTF8, 0, pUTF8Str, utfStrLen, NULL, 0);
     char16_t *wideChars = malloc(wideStrLen * sizeof(*wideChars));
 
-    // 再将UTF-16字符串转为系统默认可显字符集的字符串
+    // Then, convert the UTF-16 string to system default characters
     MultiByteToWideChar(CP_UTF8, 0, pUTF8Str, utfStrLen, wideChars, wideStrLen);
 
     const int dstLen = WideCharToMultiByte(CP_ACP, 0, wideChars, wideStrLen, NULL, 0, NULL, NULL);
@@ -290,12 +290,12 @@ void GetDefaultStringFromUTF8String(char dst[], const char *pUTF8Str)
 }
 
 /*
- 从指定的UTF-16字符串获得相应的UTF-8字符串或系统默认字符集的可显字符串
- @param dst 存放目标字节字符串的缓存
- @param utf16Str 传入的原始UTF-16字符串
- @param useUTF8 指示是否转为UTF-8字符串。true指示使用UTF-8字符串，false则表示使用默认系统字符集的可显字符串。
+ Get system default characters or UTF-8 string from the UTF-16 string
+ @param dst the buffer that stores the destination characters
+ @param utf16Str the specified UTF-16 string
+ @param useUTF8 indicate whether to use UTF-8 or system default characters
 */
-void GetByteStringFromUTF16String(char dst[], const char16_t *utf16Str, bool useUTF8)
+static void GetByteStringFromUTF16String(char dst[], const char16_t *utf16Str, bool useUTF8)
 {
     if (dst == NULL || utf16Str == NULL)
         return;
@@ -305,6 +305,32 @@ void GetByteStringFromUTF16String(char dst[], const char16_t *utf16Str, bool use
 
     WideCharToMultiByte(codePage, 0, utf16Str, -1, dst, len, NULL, NULL);
     dst[len] = '\0';
+}
+
+static void CharacterTest(void)
+{
+    const char16_t *utf16Str = u"你好，世界！こんにちは！Hello, world!";
+    size_t length = zf_utf16_strlen(utf16Str);
+    printf("The UTF-16 string length is: %zu\n", length);
+
+    char utf8Buffer[128];
+    length = zf_utf16str_to_utf8str(utf8Buffer, utf16Str);
+
+    char defaultChars[128];
+    GetDefaultStringFromUTF8String(defaultChars, utf8Buffer);
+    printf("The converted UTF-8 string length is: %zu, contents are: %s\n", length, defaultChars);
+
+    length = zf_utf16str_to_utf8str(utf8Buffer, u"abc");
+    GetDefaultStringFromUTF8String(defaultChars, utf8Buffer);
+    printf("abc length: %zu, contents: %s\n", length, defaultChars);
+
+    const char *utf8Str = u8"你好，世界！こんにちは！Hello, world!";
+    char16_t utf16Buffer[128];
+    length = zf_utf8str_to_utf16str(utf16Buffer, utf8Str);
+    printf("The UTF-16 length is: %zu\n", length);
+
+    length = zf_utf8str_to_utf16str(utf16Buffer, u8"abc");
+    printf("The UTF-16 length is: %zu\n", length);
 }
 
 static void SystemTest(void)
@@ -377,6 +403,9 @@ int main(int argc, const char * argv[])
             puts("----------------");
             
             MemoryProfileTest();
+            puts("----------------\n");
+
+            CharacterTest();
             puts("----------------\n");
 
             SystemTest();
