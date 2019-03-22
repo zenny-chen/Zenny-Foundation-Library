@@ -39,11 +39,13 @@ bool zf_create_directory(const char *path)
     if(path == NULL)
         return false;
     
-    let pathStr = [NSString stringWithUTF8String:path];
-    if(pathStr == nil || pathStr.length == 0)
-        return false;
-
-    return [NSFileManager.defaultManager createDirectoryAtPath:pathStr withIntermediateDirectories:YES attributes:nil error:NULL];
+    @autoreleasepool {
+        let pathStr = [NSString stringWithUTF8String:path];
+        if(pathStr == nil || pathStr.length == 0)
+            return false;
+        
+        return [NSFileManager.defaultManager createDirectoryAtPath:pathStr withIntermediateDirectories:YES attributes:nil error:NULL];
+    }
 }
 
 void zf_remove_directory(const char *path)
@@ -51,11 +53,13 @@ void zf_remove_directory(const char *path)
     if(path == NULL)
         return;
     
-    let pathStr = [NSString stringWithUTF8String:path];
-    if(pathStr == nil || pathStr.length == 0)
-        return;
-    
-    [NSFileManager.defaultManager removeItemAtPath:pathStr error:NULL];
+    @autoreleasepool {
+        let pathStr = [NSString stringWithUTF8String:path];
+        if(pathStr == nil || pathStr.length == 0)
+            return;
+        
+        [NSFileManager.defaultManager removeItemAtPath:pathStr error:NULL];
+    }
 }
 
 #endif
