@@ -42,19 +42,21 @@ includes = [
 srcs = [
         "unix_main.c",
         "zenny_foundation/zenny_foundation.c",
-        "zenny_foundation/zf_atomic.c",
         "zenny_foundation/zf_memory.c",
         "zenny_foundation/zf_number.c",
         "zenny_foundation/zf_single_link_table.c",
-        "zenny_foundation/zf_uchar.c",
         
-        "zenny_foundation/zf_sys/zf_directory.c",
+        "zenny_foundation/zf_sys/zf_atomic.c",
+        "zenny_foundation/zf_sys/zf_sync.c",
+        "zenny_foundation/zf_sys/zf_uchar.c",
+        "zenny_foundation/zf_sys/zf_directory.c"
         ]
 
 # For Apple platforms we just use Objective-C with Cocoa framework
 if currPlatform == "darwin":
     appleSrcs = [
-        "zenny_foundation/zf_sys/zf_directory_apple.m"
+        "zenny_foundation/zf_sys/zf_directory_apple.m",
+        "zenny_foundation/zf_sys/zf_uchar_apple.m"
     ]
     
     srcs.extend(appleSrcs)
