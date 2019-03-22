@@ -11,10 +11,7 @@
 
 #include "zenny_foundation/zenny_foundation_api.h"
 #include "zenny_foundation/zf_sys/zf_directory.h"
-
-#ifndef let
-#define let     __auto_type
-#endif
+#include "zenny_foundation/zf_sys/zf_sys.h"
 
 
 static const char* MyGetDesc(struct ZFObject *obj)
@@ -266,8 +263,11 @@ static void SystemTest(void)
     let currDir = zf_get_current_exec_path();
     printf("Current executable path is: %s\n", currDir);
     
-    if(zf_create_directory("/Users/zenny-chen/Downloads/test-dir"))
+    let testDir = "/Users/zenny-chen/Downloads/test-dir";
+    if(zf_create_directory(testDir))
         puts("`test-dir` has been created!");
+    
+    zf_remove_directory(testDir);
 }
 
 int main(int argc, const char* argv[])
