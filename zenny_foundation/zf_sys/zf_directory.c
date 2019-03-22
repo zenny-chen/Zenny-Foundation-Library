@@ -6,39 +6,20 @@
 //  Copyright © 2019 Zenny Chen. All rights reserved.
 //
 
+#ifndef __APPLE__
+
+#include "zf_sys.h"
 #include "zf_directory.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
 
-#define ZF_MAX_PATH_CHARACTERS	512
-
 /// Store the current executable directory
 static char sCurrentExecPath[ZF_MAX_PATH_CHARACTERS];
 
-#ifdef __APPLE__
+#ifdef _WIN32
 
-#include <mach-o/dyld.h>
-
-const char* zf_get_current_exec_path(void)
-{
-    if(sCurrentExecPath[0] == '\0')
-    {
-        const int maxSize = ZF_MAX_PATH_CHARACTERS - 1;
-        uint32_t size = 0;
-        _NSGetExecutablePath(NULL, &size);
-        if(size > maxSize)
-            size = maxSize;
-        
-        _NSGetExecutablePath(sCurrentExecPath, &size);
-        sCurrentExecPath[size] = '\0';
-    }
-    
-    return sCurrentExecPath;
-}
-
-#elif defined(_WIN32)
-
+// For Windows platforms
 #include <windows.h>
 #include <uchar.h>
 
@@ -186,8 +167,12 @@ void zf_remove_directory(const char *path)
 
 #else
 
-// Other unix-like operating systems
+// Other unix-like operating systems but not Apple platforms
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <unistd.h>
+#include <dirent.h>
+#include <fcntl.h>
 
 const char* zf_get_current_exec_path(void)
 {
@@ -203,17 +188,6 @@ const char* zf_get_current_exec_path(void)
     
     return sCurrentExecPath;
 }
-
-#endif
-
-
-#ifndef _WIN32
-
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <dirent.h>
-#include <fcntl.h>
 
 bool zf_create_directory(const char *path)
 {
@@ -277,5 +251,7 @@ void zf_remove_directory(const char *path)
     }
 }
 
-#endif
+#endif      // #ifndef _WIN32
+
+#endif      // #ifndef __APPLE__
 

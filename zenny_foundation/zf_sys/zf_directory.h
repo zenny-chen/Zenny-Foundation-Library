@@ -11,6 +11,9 @@
 
 #include <stdbool.h>
 
+/// Maximum number of bytes for a directory string
+#define ZF_MAX_PATH_CHARACTERS    512
+
 /// Get the current the executable absolute path
 /// @return the current the executable absolute path
 extern const char* zf_get_current_exec_path(void);
