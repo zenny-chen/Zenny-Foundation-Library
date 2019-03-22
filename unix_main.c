@@ -258,6 +258,28 @@ static void MemoryProfileTest(void)
     printf("Memory leakes: %zu\n", zf_mem_profile_leaked_item_count());
 }
 
+static void CharacterTest(void)
+{
+    const char16_t *utf16Str = u"你好，世界！こんにちは！Hello, world!";
+    size_t length = zf_utf16_strlen(utf16Str);
+    printf("The UTF-16 string length is: %zu\n", length);
+    
+    char utf8Buffer[128];
+    length = zf_utf16str_to_utf8str(utf8Buffer, utf16Str);
+    printf("The converted UTF-8 string length is: %zu, contents are: %s\n", length, utf8Buffer);
+    
+    length = zf_utf16str_to_utf8str(utf8Buffer, u"abc");
+    printf("abc length: %zu, contents: %s\n", length, utf8Buffer);
+    
+    const char *utf8Str = u8"你好，世界！こんにちは！Hello, world!";
+    char16_t utf16Buffer[128];
+    length = zf_utf8str_to_utf16str(utf16Buffer, utf8Str);
+    printf("The UTF-16 length is: %zu\n", length);
+    
+    length = zf_utf8str_to_utf16str(utf16Buffer, u8"abc");
+    printf("The UTF-16 length is: %zu\n", length);
+}
+
 static void SystemTest(void)
 {
     let currDir = zf_get_current_exec_path();
@@ -296,6 +318,10 @@ int main(int argc, const char* argv[])
         puts("----------------\n");
         
         MemoryProfileTest();
+        
+        puts("----------------\n");
+        
+        CharacterTest();
         
         puts("----------------\n");
         
