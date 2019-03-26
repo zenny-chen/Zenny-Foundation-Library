@@ -268,6 +268,9 @@ static void CharacterTest(void)
     length = zf_utf16str_to_utf8str(utf8Buffer, utf16Str);
     printf("The converted UTF-8 string length is: %zu, contents are: %s\n", length, utf8Buffer);
     
+    length = zf_utf8_strlen_from_utf16str(utf16Str);
+    printf("The length of UTF-8 string from the UTF-16 string is: %zu\n", length);
+    
     length = zf_utf16str_to_utf8str(utf8Buffer, u"abc");
     printf("abc length: %zu, contents: %s\n", length, utf8Buffer);
     
@@ -275,6 +278,9 @@ static void CharacterTest(void)
     char16_t utf16Buffer[128];
     length = zf_utf8str_to_utf16str(utf16Buffer, utf8Str);
     printf("The UTF-16 length is: %zu\n", length);
+    
+    length = zf_utf16_strlen_from_utf8str(utf8Str);
+    printf("The length of the UTF-16 string from the UTF-8 string is: %zu\n", length);
     
     length = zf_utf8str_to_utf16str(utf16Buffer, u8"abc");
     printf("The UTF-16 length is: %zu\n", length);
