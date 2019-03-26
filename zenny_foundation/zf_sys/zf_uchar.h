@@ -50,5 +50,17 @@ extern size_t zf_utf8str_to_utf16str(char16_t utf16Dst[], const char *srcUTF8Str
 /// @return the number of the characters of the string
 extern size_t zf_utf16_strlen(const char16_t *utf16Str);
 
+/// Convert the specified UTF-8 string to the UTF-16 string,
+/// and get the length of the UTF-16 string
+/// @param utf8Str the specified UTF-8 string
+/// @return the length of the converted UTF-16 string
+extern size_t zf_utf16_strlen_from_utf8str(const char *utf8Str);
+
+/// Convert the specified UTF-16 string to the UTF-8 string
+/// and get the length of the UTF-8 string
+/// @param utf16Str the specified UTF-16 string
+/// @return the length of the converted UTF-8 string
+extern size_t zf_utf8_strlen_from_utf16str(const char16_t *utf16Str);
+
 #endif /* zf_uchar_h */
 

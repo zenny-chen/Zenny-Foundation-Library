@@ -13,6 +13,7 @@
 #include "zf_uchar.h"
 #include "zf_sys.h"
 
+
 size_t zf_utf16str_to_utf8str(char utf8Dst[], const char16_t *srcUTF16Str)
 {
     if(utf8Dst == NULL || srcUTF16Str == NULL)
@@ -53,6 +54,36 @@ size_t zf_utf8str_to_utf16str(char16_t utf16Dst[], const char *srcUTF8Str)
             [str getCharacters:utf16Dst];
         
         return length;
+    }
+}
+
+size_t zf_utf16_strlen_from_utf8str(const char *utf8Str)
+{
+    if(utf8Str == NULL)
+        return 0;
+    
+    @autoreleasepool {
+        let str = [NSString stringWithUTF8String:utf8Str];
+        return str == nil ? 0 : str.length;
+    }
+}
+
+size_t zf_utf8_strlen_from_utf16str(const char16_t *utf16Str)
+{
+    if(utf16Str == NULL)
+        return 0;
+    
+    const let length = zf_utf16_strlen(utf16Str);
+    if(length == 0)
+        return 0;
+    
+    @autoreleasepool {
+        let str = [NSString stringWithCharacters:utf16Str length:length];
+        if(str == nil)
+            return 0;
+        
+        let cstr = str.UTF8String;
+        return strlen(cstr);
     }
 }
 

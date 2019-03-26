@@ -88,6 +88,24 @@ size_t zf_utf16_strlen(const char16_t *utf16Str)
     return wcslen(utf16Str);
 }
 
+size_t zf_utf16_strlen_from_utf8str(const char *utf8Str)
+{
+    if (utf8Str == NULL)
+        return 0;
+
+    const int wideStrLen = MultiByteToWideChar(CP_UTF8, 0, utf8Str, -1, NULL, 0);
+    return wideStrLen - 1;
+}
+
+size_t zf_utf8_strlen_from_utf16str(const char16_t *utf16Str)
+{
+    if (utf16Str == NULL)
+        return 0;
+
+    const int len = WideCharToMultiByte(CP_UTF8, 0, utf16Str, -1, NULL, 0, NULL, NULL);
+    return len - 1;
+}
+
 #else
 // On Unix platforms
 
@@ -275,6 +293,84 @@ size_t zf_utf8str_to_utf16str(char16_t utf16Dst[], const char *srcUTF8Str)
     utf16Dst[dstIndex] = u'\0';
 
     return dstIndex;
+}
+
+size_t zf_utf16_strlen_from_utf8str(const char *utf8Str)
+{
+    if(utf8Str == NULL)
+        return 0;
+    
+    size_t orgIndex = 0, dstLength = 0;
+    char ch;
+    
+    while((ch = utf8Str[orgIndex]) != '\0')
+    {
+        int length = 0;
+        
+        // Count the leading one bits to the UTF-8 character sequence.
+        // The number of leading one bits specifies the number of bytes needed to compose the character
+        uint32_t firstByteFlag = (uint32_t)ch & 0xfc;
+        while((firstByteFlag & 0x80) != 0)
+        {
+            firstByteFlag <<= 1;
+            length++;
+        }
+        
+        if(length == 0)
+            length = 1;
+        
+        orgIndex += length;
+        
+        int addition = length > 3? 2 : 1;
+        dstLength += addition;
+    }
+    
+    return dstLength;
+}
+
+size_t zf_utf8_strlen_from_utf16str(const char16_t *utf16Str)
+{
+    if(utf16Str == NULL)
+        return 0;
+    
+    size_t orgIndex = 0, dstLength = 0;
+    char16_t ch;
+    
+    while((ch = utf16Str[orgIndex]) != u'\0')
+    {
+        // Processs ASCII compatible code points
+        if(ch < 0x80)
+        {
+            dstLength++;
+            orgIndex++;
+            continue;
+        }
+        
+        // Process BMP
+        if(ch < 0xd800 || ch >= 0xe000)
+        {
+            if((ch & 0xf800) == 0)
+            {
+                // The highest 5 bits are zero,
+                // which implies the UTF-8 character is composed by 2 bytes.
+                dstLength += 2;
+            }
+            else
+            {
+                dstLength += 3;
+            }
+        }
+        else
+        {
+            // Otherwise, the UTF-8 character is composed by 4 bytes.
+            dstLength += 4;
+            orgIndex++;
+        }
+        
+        orgIndex++;
+    }
+    
+    return dstLength;
 }
 
 #endif  // #ifndef __APPLE__
