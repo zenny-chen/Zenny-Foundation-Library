@@ -363,9 +363,9 @@ int main(int argc, const char * argv[])
     char dstStr[64] = { '\0' };
     GetByteStringFromUTF16String(dstStr, sourceStr, false);
 
-	const wchar_t wc = L'你';
-	printf("wc size is: %zu\n", sizeof(wc));
-	printf("wc alignment is: %zu\n", _Alignof(wchar_t));
+    const wchar_t wc = L'你';
+    printf("wc size is: %zu\n", sizeof(wc));
+    printf("wc alignment is: %zu\n", _Alignof(wchar_t));
 
     printf("The string code is: %04X\n", sourceStr[0]);
     printf("The string is: %s\n", dstStr);
