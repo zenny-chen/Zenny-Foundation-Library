@@ -59,7 +59,7 @@ bool zf_create_directory(const char *path)
     MultiByteToWideChar(CP_UTF8, 0, path, pathLen, wideStr, wideStrLen);
     wideStr[wideStrLen] = u'\0';
 
-    if(CreateDirectoryW(wideStr, NULL) != 0)
+    if(CreateDirectoryW(wideStr, NULL) == 0)
         return GetLastError() == ERROR_ALREADY_EXISTS;
     
     return true;

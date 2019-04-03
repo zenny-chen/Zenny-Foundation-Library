@@ -1,4 +1,4 @@
-//
+﻿//
 //  zf_uchar.c
 //  FoundationBasedAlgorithms
 //
