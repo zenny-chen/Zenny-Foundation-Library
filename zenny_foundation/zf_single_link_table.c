@@ -1,4 +1,4 @@
-﻿//
+//
 //  zf_single_link_table.c
 //  FoundationBasedAlgorithms
 //
@@ -43,6 +43,7 @@ void ZFInitSingleLinkTable(struct ZFSingleLinkTable *table)
     ZFInitObject(&table->obj);
     table->obj.identifier = ZENNY_SINGLE_LINK_TABLE_IDENTIFIER;
     table->obj.dealloc = ZennyDeallocSingleLinkTable;
+    table->length = 0;
     table->link = NULL;
 }
 
@@ -60,14 +61,7 @@ size_t ZFGetSingleLinkTableLength(const struct ZFSingleLinkTable *table)
     if(table == NULL)
         return 0;
     
-    const struct ZFSingleLinkNode *node = table->link;
-    size_t length = 0;
-    while(node != NULL)
-    {
-        node = node->link;
-        length++;
-    }
-    return length;
+    return table->length;
 }
 
 void ZFAppendSingleLinkNode(struct ZFSingleLinkTable *table, struct ZFSingleLinkNode *node)
@@ -88,6 +82,8 @@ void ZFAppendSingleLinkNode(struct ZFSingleLinkTable *table, struct ZFSingleLink
     
     node->link = NULL;
     ZF_RETAIN_OBJECT(node);
+    
+    table->length++;
 }
 
 void ZFInsertSingleLinkNode(struct ZFSingleLinkTable *table, struct ZFSingleLinkNode *node, size_t index)
@@ -118,6 +114,7 @@ void ZFInsertSingleLinkNode(struct ZFSingleLinkTable *table, struct ZFSingleLink
     }
     
     ZF_RETAIN_OBJECT(node);
+    table->length++;
 }
 
 void ZFRemoveSingleLinkNode(struct ZFSingleLinkTable *table, struct ZFSingleLinkNode *node)
@@ -129,6 +126,7 @@ void ZFRemoveSingleLinkNode(struct ZFSingleLinkTable *table, struct ZFSingleLink
     {
         table->link = node->link;
         ZF_RELEASE_OBJECT(node);
+        table->length--;
         return;
     }
     
@@ -145,12 +143,16 @@ void ZFRemoveSingleLinkNode(struct ZFSingleLinkTable *table, struct ZFSingleLink
     {
         dstNode->link = node->link;
         ZF_RELEASE_OBJECT(node);
+        table->length--;
     }
 }
 
 void ZFRemoveSingleLinkNodeAtIndex(struct ZFSingleLinkTable *table, size_t index)
 {
     if(table == NULL)
+        return;
+    
+    if(index >= table->length)
         return;
     
     struct ZFSingleLinkNode *dstNode = NULL;
@@ -175,8 +177,12 @@ void ZFRemoveSingleLinkNodeAtIndex(struct ZFSingleLinkTable *table, size_t index
             prevNode->link = dstNode->link;
         }
     }
+    
     if(dstNode != NULL)
+    {
         ZF_RELEASE_OBJECT(dstNode);
+        table->length--;
+    }
 }
 
 void ZFRemoveAllSingleLinkNodes(struct ZFSingleLinkTable *table)
@@ -189,6 +195,7 @@ void ZFRemoveAllSingleLinkNodes(struct ZFSingleLinkTable *table)
     
     ZennyRecurDeleteNodes(table->link);
     
+    table->length = 0;
     table->link = NULL;
 }
 

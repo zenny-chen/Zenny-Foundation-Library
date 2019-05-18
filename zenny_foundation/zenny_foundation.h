@@ -1,4 +1,4 @@
-﻿//
+//
 //  zenny_foundation.h
 //  FoundationBasedAlgorithms
 //
@@ -15,10 +15,6 @@
 
 #include <stdbool.h>
 
-#ifdef _WIN32
-/// signed size_t type which may be used in this foundation library
-typedef ptrdiff_t   ssize_t;
-#endif
 
 // MARK: Zenny Foundation Class Identifiers
 

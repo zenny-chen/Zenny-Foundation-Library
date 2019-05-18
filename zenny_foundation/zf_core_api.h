@@ -9,6 +9,7 @@
 #ifndef zf_core_api_h
 #define zf_core_api_h
 
+#include "zf_sys/zf_sys.h"
 #include "zf_sys/zf_sync.h"
 #include "zf_sys/zf_uchar.h"
 #include "zf_memory.h"

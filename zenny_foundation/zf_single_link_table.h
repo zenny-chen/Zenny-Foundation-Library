@@ -1,4 +1,4 @@
-﻿//
+//
 //  zf_single_link_table.h
 //  FoundationBasedAlgorithms
 //
@@ -27,6 +27,10 @@ struct ZFSingleLinkNode
 struct ZFSingleLinkTable
 {
     struct ZFObject obj;
+    
+    /// length of the single link table
+    size_t length;
+    
     struct ZFSingleLinkNode *link;
 };
 
