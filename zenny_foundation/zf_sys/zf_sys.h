@@ -11,13 +11,29 @@
 
 #ifndef _WIN32
 
+#include <stdalign.h>
+
+#define thread_local    _Thread_local
+
 // For Unix-like operating systems, we can easily use GNU C syntax extensions
 
 #ifndef let
 #define let     __auto_type
 #endif
 
-#endif
+#else
+
+#include <stddef.h>
+
+#define alignof             _Alignof
+#define alignas(nBytes)     __declspec(align(nBytes))
+
+#define thread_local        __declspec(thread)
+
+/// signed size_t type which may be used in this foundation library
+typedef ptrdiff_t   ssize_t;
+
+#endif  // #ifndef _WIN32
 
 #endif /* zf_sys_h */
 
