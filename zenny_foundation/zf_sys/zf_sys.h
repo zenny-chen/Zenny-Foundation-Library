@@ -9,19 +9,21 @@
 #ifndef zf_sys_h
 #define zf_sys_h
 
-#ifndef _WIN32
+#ifndef _MSC_VER
+
+// For Unix-like operating systems, we can easily use GNU C syntax extensions
 
 #include <stdalign.h>
 
 #define thread_local    _Thread_local
-
-// For Unix-like operating systems, we can easily use GNU C syntax extensions
 
 #ifndef let
 #define let     __auto_type
 #endif
 
 #else
+
+// For MSVC
 
 #include <stddef.h>
 
