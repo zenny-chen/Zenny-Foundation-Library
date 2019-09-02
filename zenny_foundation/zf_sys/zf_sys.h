@@ -13,12 +13,13 @@
 
 #ifndef _MSC_VER
 
-// For Unix-like operating systems, we can easily use GNU C syntax extensions
-
+// Unix-like OS environment
+#include <unistd.h>
 #include <stdalign.h>
 
 #define thread_local    _Thread_local
 
+// For Unix-like operating systems, we can easily use GNU C syntax extensions
 #ifndef let
 #define let     __auto_type
 #endif
@@ -50,6 +51,25 @@ typedef ptrdiff_t   ssize_t;
 #define puts(cstr)      printf("%s\n", cstr)
 
 #endif  // #ifdef __ANDROID__
+
+/// Gets a whole line from the stdin stream, excluding the last newline character.
+/// @param buffer the buffer that stores the input string
+/// @param maxBufferSize the maximum size of the buffer
+/// @return if successful, return the number of bytes the buffer stores; Otherwise, return -1.
+static inline ssize_t zf_get_console_line(char* buffer, size_t maxBufferSize)
+{
+    if (buffer == NULL)
+        return -1;
+
+#ifdef _WIN32
+
+    char* result = gets_s(buffer, maxBufferSize);
+    return result == NULL ? -1 : strlen(result);
+
+#endif
+}
+
+
 
 #endif /* zf_sys_h */
 
