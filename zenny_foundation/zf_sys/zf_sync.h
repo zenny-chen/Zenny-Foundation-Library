@@ -43,7 +43,7 @@ static inline void zf_cpu_pause(void)
 {
 #if defined(__x86__) || defined(__i386__) || defined(__x86_64__)
     asm("pause");
-#elif defined(__arm__) || defined(__arm64__)
+#elif defined(__arm__) || defined(__aarch64__)
     asm("yield");
 #else
     // For other CPU architectures, do nothing here...
