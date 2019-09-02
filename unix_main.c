@@ -13,6 +13,10 @@
 #include "zenny_foundation/zf_sys/zf_directory.h"
 #include "zenny_foundation/zf_sys/zf_sys.h"
 
+static noreturn void Goodbye(void)
+{
+    exit(-1);
+}
 
 static const char* MyGetDesc(struct ZFObject *obj)
 {
@@ -308,11 +312,11 @@ int main(int argc, const char* argv[])
     
     do
     {
-        char *contents = NULL;
-        size_t len = 0;
-        getline(&contents, &len, stdin);
+        char contents[1024];
+        ssize_t len = zf_get_console_line(contents, zf_countof(contents));
+        printf("The input string just now is: %s, and length is: %td\n", contents, len);
         
-        if(strcmp(contents, "exit\n") == 0)
+        if(strcmp(contents, "exit") == 0)
             break;
         
         Test();
