@@ -93,9 +93,13 @@ static inline ssize_t zf_get_console_line(char* buffer, size_t maxBufferSize)
         
         strncpy(buffer, tmpBuf, result);
     }
-    free(tmpBuf);
     
-    buffer[result] = '\0';
+    if(tmpBuf != NULL)
+        free(tmpBuf);
+    
+    if(result >= 0)
+        buffer[result] = '\0';
+    
     return result;
 
 #endif
