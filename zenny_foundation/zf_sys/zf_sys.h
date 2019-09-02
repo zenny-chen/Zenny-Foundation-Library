@@ -17,16 +17,18 @@
 
 #ifndef _MSC_VER
 
-// Unix-like OS environment
-#include <unistd.h>
 #include <stdalign.h>
 #include <stdnoreturn.h>
 
 #define thread_local    _Thread_local
 
-// For Unix-like operating systems, we can easily use GNU C syntax extensions
+#ifdef __GNUC__
+// GNU C extensions
+
 #ifndef let
 #define let     __auto_type
+#endif
+
 #endif
 
 #else
@@ -44,6 +46,7 @@
 typedef ptrdiff_t   ssize_t;
 
 #endif  // #ifndef _MSC_VER
+
 
 // MARK: stdio relevant
 
@@ -85,14 +88,14 @@ static inline ssize_t zf_get_console_line(char* buffer, size_t maxBufferSize)
                 result--;
         }
         
+        if(result >= maxBufferSize)
+            result = maxBufferSize - 1;
+        
         strncpy(buffer, tmpBuf, result);
     }
-    if(tmpBuf != NULL)
-        free(tmpBuf);
+    free(tmpBuf);
     
-    if(result >= 0)
-        buffer[result] = '\0';
-    
+    buffer[result] = '\0';
     return result;
 
 #endif
