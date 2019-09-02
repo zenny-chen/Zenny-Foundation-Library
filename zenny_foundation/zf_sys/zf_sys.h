@@ -10,12 +10,16 @@
 #define zf_sys_h
 
 #include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
 
 #ifndef _MSC_VER
 
 // Unix-like OS environment
 #include <unistd.h>
 #include <stdalign.h>
+#include <stdnoreturn.h>
 
 #define thread_local    _Thread_local
 
@@ -34,6 +38,8 @@
 #define alignas(nBytes)     __declspec(align(nBytes))
 
 #define thread_local        __declspec(thread)
+
+#define noreturn            __declspec(noreturn)
 
 /// signed size_t type which may be used in this foundation library
 typedef ptrdiff_t   ssize_t;
@@ -65,11 +71,33 @@ static inline ssize_t zf_get_console_line(char* buffer, size_t maxBufferSize)
 
     char* result = gets_s(buffer, maxBufferSize);
     return result == NULL ? -1 : strlen(result);
+    
+#else
+    
+    char *tmpBuf = NULL;
+    size_t nBytes = 0;
+    ssize_t result = getline(&tmpBuf, &nBytes, stdin);
+    if(result > 0)
+    {
+        int nIters = result < 2 ? (int)result : 2;
+        for(ssize_t index = result - 1; nIters > 0; nIters--, index--)
+        {
+            if(tmpBuf[index] == '\r' || tmpBuf[index] == '\n')
+                result--;
+        }
+        
+        strncpy(buffer, tmpBuf, result);
+    }
+    if(tmpBuf != NULL)
+        free(tmpBuf);
+    
+    if(result >= 0)
+        buffer[result] = '\0';
+    
+    return result;
 
 #endif
 }
-
-
 
 #endif /* zf_sys_h */
 
