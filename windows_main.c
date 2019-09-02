@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <uchar.h>
 #include "zenny_foundation/zenny_foundation_api.h"
+#include "zenny_foundation/zf_sys/zf_sys.h"
 #include "zenny_foundation/zf_sys/zf_directory.h"
 
 
@@ -401,7 +402,7 @@ int main(int argc, const char * argv[])
 
     while (!willExit)
     {
-        gets_s(contents, sizeof(contents));
+        zf_get_console_line(contents, sizeof(contents));
         willExit = strcmp(contents, "exit") == 0;
         if (!willExit)
         {
