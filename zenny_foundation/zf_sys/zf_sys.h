@@ -39,5 +39,17 @@ typedef ptrdiff_t   ssize_t;
 
 #endif  // #ifndef _MSC_VER
 
+// MARK: stdio relevant
+
+#ifdef __ANDROID__
+
+#include <syslog.h>
+
+#define printf(...)     syslog(LOG_INFO, __VA_ARGS__)
+
+#define puts(cstr)      printf("%s\n", cstr)
+
+#endif  // #ifdef __ANDROID__
+
 #endif /* zf_sys_h */
 
