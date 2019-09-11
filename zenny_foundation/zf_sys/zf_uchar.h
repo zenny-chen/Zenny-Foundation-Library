@@ -20,6 +20,7 @@
 #include <stdint.h>
 
 typedef uint16_t char16_t;
+typedef uint32_t char32_t;
 
 #endif  // #ifndef __APPLE__
 
