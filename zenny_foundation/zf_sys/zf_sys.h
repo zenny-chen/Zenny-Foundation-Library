@@ -35,6 +35,8 @@
 
 // For MSVC
 
+#include <Windows.h>
+
 #define alignof             _Alignof
 #define alignas(nBytes)     __declspec(align(nBytes))
 

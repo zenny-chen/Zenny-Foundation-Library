@@ -27,7 +27,7 @@ static inline void zf_nap(void)
 #else
 
 // Windows OS environment
-#include <windows.h>
+#include "zf_sys.h"
 
 /// Let the current thread briefly sleep and make another thread run
 static inline void zf_nap(void)

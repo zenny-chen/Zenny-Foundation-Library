@@ -20,7 +20,6 @@ static char sCurrentExecPath[ZF_MAX_PATH_CHARACTERS];
 #ifdef _WIN32
 
 // For Windows platforms
-#include <windows.h>
 #include <uchar.h>
 
 const char* zf_get_current_exec_path(void)

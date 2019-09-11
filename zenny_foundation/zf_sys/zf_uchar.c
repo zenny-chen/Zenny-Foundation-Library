@@ -52,8 +52,7 @@ void zf_char16_to_chars(char16_t ch16, char chBuffer[4])
 
 #ifdef _WIN32
 // On Windows platforms
-
-#include <windows.h>
+#include "zf_sys.h"
 
 size_t zf_utf16str_to_utf8str(char utf8Dst[], const char16_t *srcUTF16Str)
 {
