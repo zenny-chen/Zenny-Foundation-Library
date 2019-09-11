@@ -8,6 +8,7 @@
 
 #include "zf_memory.h"
 #include "zf_atomic.h"
+#include "zf_sync.h"
 
 #include <stdlib.h>
 #include <string.h>
