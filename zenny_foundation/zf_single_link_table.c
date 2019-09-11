@@ -11,10 +11,12 @@
 
 static void ZennyRecurDeleteNodes(struct ZFSingleLinkNode *node)
 {
-    if(node->link != NULL)
-        ZennyRecurDeleteNodes(node->link);
-    
-    ZF_RELEASE_OBJECT(node);
+    while (node != NULL)
+    {
+        struct ZFSingleLinkNode* next = node->link;
+        ZF_RELEASE_OBJECT(node);
+        node = next;
+    }
 }
 
 static void ZennyDeallocSingleLinkTable(struct ZFObject *obj)
