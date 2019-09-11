@@ -11,14 +11,14 @@
 #include "zenny_foundation/zenny_foundation_api.h"
 #include "zenny_foundation/zf_sys/zf_sys.h"
 #include "zenny_foundation/zf_sys/zf_directory.h"
+#include "zenny_foundation/zf_sys/zf_atomic_opaque.h"
 
-
-static const char* MyGetDesc(struct ZFObject *obj)
+static const char* MyGetDesc(struct ZFObject* obj)
 {
     return obj->identifier == 1000 ? "MyObject" : "unknown";
 }
 
-static void MyDeallocMethod(struct ZFObject *obj)
+static void MyDeallocMethod(struct ZFObject* obj)
 {
     if (obj->identifier == 5000)
         puts("My customized object is deallocated!");
@@ -26,7 +26,7 @@ static void MyDeallocMethod(struct ZFObject *obj)
 
 static void Test(void)
 {
-    struct ZFObject *obj = NULL;
+    struct ZFObject* obj = NULL;
     ZF_CREATE_OBJECT(obj);
 
     obj->data = 100;
@@ -35,20 +35,20 @@ static void Test(void)
 
     printf("Is it null object? %d\n", ZF_RETAIN_RET_OBJECT(NULL) == NULL);
 
-    struct ZFSingleLinkTable *table = NULL;
+    struct ZFSingleLinkTable* table = NULL;
     ZF_CREATE_SINGLE_LINK_TABLE(table);
 
     printf("The table class is: %s\n", ZF_OBJECT_DESC(table));
 
-    struct ZFNumber *number = NULL;
+    struct ZFNumber* number = NULL;
     ZF_CREATE_NUMBER(number, (union ZFNumberValueType) { .b = true }, ZF_NUMBER_ENCODING_BOOL);
-    struct ZFSingleLinkNode *node1 = NULL;
+    struct ZFSingleLinkNode* node1 = NULL;
     ZF_CREATE_SINGLE_LINK_NODE(node1, (struct ZFObject*)number);
     ZF_RELEASE_OBJECT(number);
     printf("The node1 class is: %s\n", ZF_OBJECT_DESC(node1));
 
-	ZF_CREATE_NUMBER(number, (union ZFNumberValueType) {.A = 2}, ZF_NUMBER_ENCODING_UBYTE);
-    struct ZFSingleLinkNode *node2 = NULL;
+    ZF_CREATE_NUMBER(number, (union ZFNumberValueType) { .A = 2 }, ZF_NUMBER_ENCODING_UBYTE);
+    struct ZFSingleLinkNode* node2 = NULL;
     ZF_CREATE_SINGLE_LINK_NODE(node2, (struct ZFObject*)number);
     ZF_RELEASE_OBJECT(number);
 
@@ -64,7 +64,7 @@ static void Test(void)
     obj->identifier = 5000;
     obj->dealloc = MyDeallocMethod;
     obj->data = 101;
-    struct ZFSingleLinkNode *node3 = NULL;
+    struct ZFSingleLinkNode* node3 = NULL;
     ZF_CREATE_SINGLE_LINK_NODE(node3, obj);
     ZF_RELEASE_OBJECT(obj);
 
@@ -73,7 +73,7 @@ static void Test(void)
 
     printf("The length is: %zu\n", ZFGetSingleLinkTableLength(table));
 
-    struct ZFSingleLinkNode *node4 = NULL;
+    struct ZFSingleLinkNode* node4 = NULL;
     ZF_CREATE_SINGLE_LINK_NODE(node4, NULL);
 
     ssize_t index = ZFFindSingleLinkNode(table, node4);
@@ -82,9 +82,9 @@ static void Test(void)
 
     ZF_RELEASE_OBJECT(node4);
 
-    for (struct ZFSingleLinkNode *iter = ZFSingleLinkNodeIteratorBegin(table); iter != NULL; iter = ZFSingleLinkNodeIteratorNext(iter))
+    for (struct ZFSingleLinkNode* iter = ZFSingleLinkNodeIteratorBegin(table); iter != NULL; iter = ZFSingleLinkNodeIteratorNext(iter))
     {
-		struct ZFObject *data = iter->data;
+        struct ZFObject* data = iter->data;
         if (data->identifier == ZENNY_NUMBER_IDENTIFIER)
         {
             char desc[64] = { '\0' };
@@ -126,10 +126,10 @@ struct Parent
     struct ZFObject obj;
     uint32_t identifier;
     int data;
-    void(*childDealloc)(struct ZFObject *obj);
+    void(*childDealloc)(struct ZFObject* obj);
 };
 
-static void MyDeallocParent(struct ZFObject *obj)
+static void MyDeallocParent(struct ZFObject* obj)
 {
     struct Parent* parent = (struct Parent*)obj;
     if (parent->identifier != 0x1000)
@@ -143,7 +143,7 @@ static void MyDeallocParent(struct ZFObject *obj)
 
 /// For inheritage, it is necessary to expose an init function
 /// which can be used by subclasses.
-void MyInitParent(struct Parent *parent)
+void MyInitParent(struct Parent* parent)
 {
     ZFInitObject(&parent->obj);
     parent->identifier = 0x1000;
@@ -152,9 +152,9 @@ void MyInitParent(struct Parent *parent)
     parent->childDealloc = NULL;
 }
 
-struct Parent * MyCreateParent(void)
+struct Parent* MyCreateParent(void)
 {
-    struct Parent *parent = malloc(sizeof(*parent));
+    struct Parent* parent = malloc(sizeof(*parent));
     MyInitParent(parent);
     return parent;
 }
@@ -167,7 +167,7 @@ struct Child
     int data;
 };
 
-static void MyDeallocChild(struct ZFObject *obj)
+static void MyDeallocChild(struct ZFObject* obj)
 {
     struct Child* child = (struct Child*)obj;
     if (child->identifier != 0x1001)
@@ -176,9 +176,9 @@ static void MyDeallocChild(struct ZFObject *obj)
     puts("Child deallocated!");
 }
 
-struct Child * MyCreateChild(void)
+struct Child* MyCreateChild(void)
 {
-    struct Child *child = malloc(sizeof(*child));
+    struct Child* child = malloc(sizeof(*child));
 
     // Initialize child with MyInitParent
     MyInitParent(&child->obj);
@@ -190,17 +190,17 @@ struct Child * MyCreateChild(void)
 
 static __declspec(noinline) void InheritageTest(void)
 {
-    struct Parent *parent = MyCreateParent();
+    struct Parent* parent = MyCreateParent();
     ZF_RELEASE_OBJECT(parent);
 
-    struct Child *child = MyCreateChild();
+    struct Child* child = MyCreateChild();
     printf("Parent data is: %d, child data is: %d\n", child->obj.data, child->data);
     ZF_RELEASE_OBJECT(child);
 }
 
 static void MemoryProfileTest(void)
 {
-    struct ZFObject *obj = NULL;
+    struct ZFObject* obj = NULL;
     ZF_CREATE_OBJECT(obj);
     obj->data = 125;
     ZF_RELEASE_OBJECT(obj); // TEST
@@ -208,25 +208,25 @@ static void MemoryProfileTest(void)
     ZF_CREATE_OBJECT(obj);
     obj->data = -100;
 
-    struct ZFNumber *num = NULL;
+    struct ZFNumber* num = NULL;
     ZF_CREATE_NUMBER(num, (union ZFNumberValueType) { .i = -550 }, ZF_NUMBER_ENCODING_INT);
     ZF_RELEASE_OBJECT(num); // TEST
 
-	ZF_CREATE_NUMBER(num, (union ZFNumberValueType) { .I = 90U }, ZF_NUMBER_ENCODING_UINT);
+    ZF_CREATE_NUMBER(num, (union ZFNumberValueType) { .I = 90U }, ZF_NUMBER_ENCODING_UINT);
 
-    void *mem = NULL;
+    void* mem = NULL;
     ZF_MALLOC(mem, 128);
     ZF_FREE(mem);   // TEST
 
     ZF_MALLOC(mem, 64);
 
-    struct ZFSingleLinkTable *table = NULL;
+    struct ZFSingleLinkTable* table = NULL;
     ZF_CREATE_SINGLE_LINK_TABLE(table);
     ZF_RELEASE_OBJECT(table);   // TEST
 
     ZF_CREATE_SINGLE_LINK_TABLE(table);
 
-    struct ZFSingleLinkNode *node = NULL;
+    struct ZFSingleLinkNode* node = NULL;
     ZF_CREATE_SINGLE_LINK_NODE(node, obj);
     ZF_RELEASE_OBJECT(obj);
     ZF_RELEASE_OBJECT(node);    // TEST
@@ -235,7 +235,7 @@ static void MemoryProfileTest(void)
 
     printf("Registered memory buffers: %zu\n", zf_mem_profile_registered_item_count());
 
-    const struct ZFMemoryProfileInfo *memInfo = NULL;
+    const struct ZFMemoryProfileInfo* memInfo = NULL;
     while ((memInfo = zf_enumerate_registered_profile_item(memInfo)) != NULL)
     {
         printf("ptr identifier: `%s`, in function: `%s`, @line: %d, in file: `%s`, address: 0x%.16tX, size: %zu\n", memInfo->ptrID, memInfo->funcName, memInfo->lineNumber, memInfo->fileName, memInfo->ptr, memInfo->size);
@@ -258,12 +258,12 @@ static void MemoryProfileTest(void)
     printf("Memory leakes: %zu\n", zf_mem_profile_leaked_item_count());
 }
 
-/* 
+/*
  Get system default characters from UTf-8 string
  @param dst the buffer that stores the system default characters
  @param pUTF8Str the specified UTF-8 string
 */
-static void GetDefaultStringFromUTF8String(char dst[], const char *pUTF8Str)
+static void GetDefaultStringFromUTF8String(char dst[], const char* pUTF8Str)
 {
     if (dst == NULL || pUTF8Str == NULL)
         return;
@@ -277,7 +277,7 @@ static void GetDefaultStringFromUTF8String(char dst[], const char *pUTF8Str)
 
     // Firstly, convert the UTF-8 string to UTF-16 string
     const int wideStrLen = MultiByteToWideChar(CP_UTF8, 0, pUTF8Str, utfStrLen, NULL, 0);
-    char16_t *wideChars = malloc(wideStrLen * sizeof(*wideChars));
+    char16_t* wideChars = malloc(wideStrLen * sizeof(*wideChars));
 
     // Then, convert the UTF-16 string to system default characters
     MultiByteToWideChar(CP_UTF8, 0, pUTF8Str, utfStrLen, wideChars, wideStrLen);
@@ -296,7 +296,7 @@ static void GetDefaultStringFromUTF8String(char dst[], const char *pUTF8Str)
  @param utf16Str the specified UTF-16 string
  @param useUTF8 indicate whether to use UTF-8 or system default characters
 */
-static void GetByteStringFromUTF16String(char dst[], const char16_t *utf16Str, bool useUTF8)
+static void GetByteStringFromUTF16String(char dst[], const char16_t* utf16Str, bool useUTF8)
 {
     if (dst == NULL || utf16Str == NULL)
         return;
@@ -310,7 +310,7 @@ static void GetByteStringFromUTF16String(char dst[], const char16_t *utf16Str, b
 
 static void CharacterTest(void)
 {
-    const char16_t *utf16Str = u"你好，世界！こんにちは！Hello, world!";
+    const char16_t* utf16Str = u"你好，世界！こんにちは！Hello, world!";
     size_t length = zf_utf16_strlen(utf16Str);
     printf("The UTF-16 string length is: %zu\n", length);
 
@@ -327,7 +327,7 @@ static void CharacterTest(void)
     length = zf_utf16str_to_utf8str(utf8Buffer, u"abc");
     printf("abc length: %zu, contents: %s\n", length, utf8Buffer);
 
-    const char *utf8Str = u8"你好，世界！こんにちは！Hello, world!";
+    const char* utf8Str = u8"你好，世界！こんにちは！Hello, world!";
     char16_t utf16Buffer[128];
     length = zf_utf8str_to_utf16str(utf16Buffer, utf8Str);
     printf("The UTF-16 length is: %zu\n", length);
@@ -342,24 +342,37 @@ static void CharacterTest(void)
 static void SystemTest(void)
 {
     char path[512];
-    const char *currDir = zf_get_current_exec_path();
+    const char* currDir = zf_get_current_exec_path();
 
     GetDefaultStringFromUTF8String(path, currDir);
     currDir = path;
 
     printf("The current directory is: %s\n", currDir);
 
-    const char *dir = u8"C:/Users/zenny/Desktop/测试目录";
+    const char* dir = u8"C:/Users/zenny/Desktop/测试目录";
     if (zf_create_directory(dir))
         puts("The directory is created!");
 
     zf_remove_directory(dir);
 }
 
-int main(int argc, const char * argv[])
+static void noreturn MyExit(void)
 {
+    exit(0);
+}
+
+int main(int argc, const char* argv[])
+{
+    struct ZFOpaqueAtomicType atomInt = { 0 };
+    zf_opaque_atomic_store_int(&atomInt, 20);
+    int a = zf_opaque_atomic_load_int(&atomInt);
+    printf("a = %d\n", a);
+
+    a = zf_opaque_atomic_fetch_add_int(&atomInt, 5);
+    printf("a = %d, atomInt = %d\n", a, zf_opaque_atomic_load_int(&atomInt));
+
     // insert code here...
-    const char16_t *sourceStr = u"你好，世界！Hello, world!";
+    const char16_t* sourceStr = u"你好，世界！Hello, world!";
 
     char dstStr[64] = { '\0' };
     GetByteStringFromUTF16String(dstStr, sourceStr, false);
@@ -374,14 +387,14 @@ int main(int argc, const char * argv[])
     GetDefaultStringFromUTF8String(dstStr, u8"你");
     printf("The string is: %s\n", dstStr);
 
-    const char *utf8Str = u8"你";
+    const char* utf8Str = u8"你";
     size_t length = strlen(utf8Str);
     printf("The string code is: ");
     for (size_t i = 0; i < length; i++)
         printf("%02X", (uint8_t)utf8Str[i]);
 
     puts("");
-    
+
     int array[] = { 1, 2, 3, 4, 5 };
     const ssize_t count = zf_countof(array);
     printf("The count of array is: %zd\n", count);
@@ -395,7 +408,7 @@ int main(int argc, const char * argv[])
     printf("orgValue = %d, current value = %d\n", orgValue, atomic_load(&aa));
 
     puts("Hello, World!\n\nInput 'exit' to exit the program; Otherwise to test...\n");
-    
+
     bool willExit = false;
 
     char contents[1024];
@@ -408,10 +421,10 @@ int main(int argc, const char * argv[])
         {
             Test();
             puts("----------------");
-            
+
             InheritageTest();
             puts("----------------");
-            
+
             MemoryProfileTest();
             puts("----------------\n");
 
@@ -422,7 +435,9 @@ int main(int argc, const char * argv[])
             puts("----------------\n");
         }
     }
-    
+
+    MyExit();
+
     return 0;
 }
 
