@@ -9,6 +9,10 @@
 #ifndef zf_sys_h
 #define zf_sys_h
 
+#ifdef _WIN32
+#include <Windows.h>
+#endif
+
 #include <stdio.h>
 #include <stddef.h>
 #include <stdbool.h>
@@ -34,8 +38,6 @@
 #else
 
 // For MSVC
-
-#include <Windows.h>
 
 #define alignof             _Alignof
 #define alignas(nBytes)     __declspec(align(nBytes))
