@@ -379,5 +379,140 @@ extern char32_t zf_opaque_atomic_fetch_add_char32(volatile struct ZFOpaqueAtomic
 /// @return the original value stored in the opaque atomic object before this operation
 extern wchar_t zf_opaque_atomic_fetch_add_wchar(volatile struct ZFOpaqueAtomicType *object, wchar_t value);
 
+// MARK: atomic fetch subtraction operations
+
+/// Atomically subtract the specified value from the char value in the opaque atomic object,
+/// and store the result to the atomic object.
+/// @param object pointer to the opaque atomic object
+/// @param value the subtrahend
+/// @return the original value stored in the opaque atomic object before this operation
+extern char zf_opaque_atomic_fetch_sub_char(volatile struct ZFOpaqueAtomicType *object, char value);
+
+/// Atomically subtract the specified value from the int8_t value in the opaque atomic object,
+/// and store the result to the atomic object.
+/// @param object pointer to the opaque atomic object
+/// @param value the subtrahend
+/// @return the original value stored in the opaque atomic object before this operation
+extern int8_t zf_opaque_atomic_fetch_sub_int8(volatile struct ZFOpaqueAtomicType *object, int8_t value);
+
+/// Atomically subtract the specified value from the uint8_t value in the opaque atomic object,
+/// and store the result to the atomic object.
+/// @param object pointer to the opaque atomic object
+/// @param value the subtrahend
+/// @return the original value stored in the opaque atomic object before this operation
+extern uint8_t zf_opaque_atomic_fetch_sub_uint8(volatile struct ZFOpaqueAtomicType *object, uint8_t value);
+
+/// Atomically subtract the specified value from the int16_t value in the opaque atomic object,
+/// and store the result to the atomic object.
+/// @param object pointer to the opaque atomic object
+/// @param value the subtrahend
+/// @return the original value stored in the opaque atomic object before this operation
+extern int16_t zf_opaque_atomic_fetch_sub_int16(volatile struct ZFOpaqueAtomicType *object, int16_t value);
+
+/// Atomically subtract the specified value from the uint16_t value in the opaque atomic object,
+/// and store the result to the atomic object.
+/// @param object pointer to the opaque atomic object
+/// @param value the subtrahend
+/// @return the original value stored in the opaque atomic object before this operation
+extern uint16_t zf_opaque_atomic_fetch_sub_uint16(volatile struct ZFOpaqueAtomicType *object, uint16_t value);
+
+/// Atomically subtract the specified value from the int32_t value in the opaque atomic object,
+/// and store the result to the atomic object.
+/// @param object pointer to the opaque atomic object
+/// @param value the subtrahend
+/// @return the original value stored in the opaque atomic object before this operation
+extern int32_t zf_opaque_atomic_fetch_sub_int32(volatile struct ZFOpaqueAtomicType *object, int32_t value);
+
+/// Atomically subtract the specified value from the uint32_t value in the opaque atomic object,
+/// and store the result to the atomic object.
+/// @param object pointer to the opaque atomic object
+/// @param value the subtrahend
+/// @return the original value stored in the opaque atomic object before this operation
+extern uint32_t zf_opaque_atomic_fetch_sub_uint32(volatile struct ZFOpaqueAtomicType *object, uint32_t value);
+
+/// Atomically subtract the specified value from the int value in the opaque atomic object,
+/// and store the result to the atomic object.
+/// @param object pointer to the opaque atomic object
+/// @param value the subtrahend
+/// @return the original value stored in the opaque atomic object before this operation
+extern int zf_opaque_atomic_fetch_sub_int(volatile struct ZFOpaqueAtomicType *object, int value);
+
+/// Atomically subtract the specified value from the unsigned int value in the opaque atomic object,
+/// and store the result to the atomic object.
+/// @param object pointer to the opaque atomic object
+/// @param value the subtrahend
+/// @return the original value stored in the opaque atomic object before this operation
+extern unsigned zf_opaque_atomic_fetch_sub_uint(volatile struct ZFOpaqueAtomicType *object, unsigned value);
+
+/// Atomically subtract the specified value from the intptr_t value in the opaque atomic object,
+/// and store the result to the atomic object.
+/// @param object pointer to the opaque atomic object
+/// @param value the subtrahend
+/// @return the original value stored in the opaque atomic object before this operation
+extern intptr_t zf_opaque_atomic_fetch_sub_intptr(volatile struct ZFOpaqueAtomicType *object, intptr_t value);
+
+/// Atomically subtract the specified value from the uintptr_t value in the opaque atomic object,
+/// and store the result to the atomic object.
+/// @param object pointer to the opaque atomic object
+/// @param value the subtrahend
+/// @return the original value stored in the opaque atomic object before this operation
+extern uintptr_t zf_opaque_atomic_fetch_sub_uintptr(volatile struct ZFOpaqueAtomicType *object, uintptr_t value);
+
+/// Atomically subtract the specified value from the size_t value in the opaque atomic object,
+/// and store the result to the atomic object.
+/// @param object pointer to the opaque atomic object
+/// @param value the subtrahend
+/// @return the original value stored in the opaque atomic object before this operation
+extern size_t zf_opaque_atomic_fetch_sub_size(volatile struct ZFOpaqueAtomicType *object, size_t value);
+
+/// Atomically subtract the specified value from the size_t value in the opaque atomic object,
+/// and store the result to the atomic object.
+/// @param object pointer to the opaque atomic object
+/// @param value the subtrahend
+/// @return the original value stored in the opaque atomic object before this operation
+extern ssize_t zf_opaque_atomic_fetch_sub_ssize(volatile struct ZFOpaqueAtomicType *object, ssize_t value);
+
+/// Atomically subtract the specified value from the ptrdiff_t value in the opaque atomic object,
+/// and store the result to the atomic object.
+/// @param object pointer to the opaque atomic object
+/// @param value the subtrahend
+/// @return the original value stored in the opaque atomic object before this operation
+extern ptrdiff_t zf_opaque_atomic_fetch_sub_ptrdiff(volatile struct ZFOpaqueAtomicType *object, ptrdiff_t value);
+
+/// Atomically subtract the specified value from the intmax_t value in the opaque atomic object,
+/// and store the result to the atomic object.
+/// @param object pointer to the opaque atomic object
+/// @param value the subtrahend
+/// @return the original value stored in the opaque atomic object before this operation
+extern intmax_t zf_opaque_atomic_fetch_sub_intmax(volatile struct ZFOpaqueAtomicType *object, intmax_t value);
+
+/// Atomically subtract the specified value from the uintmax_t value in the opaque atomic object,
+/// and store the result to the atomic object.
+/// @param object pointer to the opaque atomic object
+/// @param value the subtrahend
+/// @return the original value stored in the opaque atomic object before this operation
+extern uintmax_t zf_opaque_atomic_fetch_sub_uintmax(volatile struct ZFOpaqueAtomicType *object, uintmax_t value);
+
+/// Atomically subtract the specified value from the char16_t value in the opaque atomic object,
+/// and store the result to the atomic object.
+/// @param object pointer to the opaque atomic object
+/// @param value the subtrahend
+/// @return the original value stored in the opaque atomic object before this operation
+extern char16_t zf_opaque_atomic_fetch_sub_char16(volatile struct ZFOpaqueAtomicType *object, char16_t value);
+
+/// Atomically subtract the specified value from the char32_t value in the opaque atomic object,
+/// and store the result to the atomic object.
+/// @param object pointer to the opaque atomic object
+/// @param value the subtrahend
+/// @return the original value stored in the opaque atomic object before this operation
+extern char32_t zf_opaque_atomic_fetch_sub_char32(volatile struct ZFOpaqueAtomicType *object, char32_t value);
+
+/// Atomically subtract the specified value from the wchar_t value in the opaque atomic object,
+/// and store the result to the atomic object.
+/// @param object pointer to the opaque atomic object
+/// @param value the subtrahend
+/// @return the original value stored in the opaque atomic object before this operation
+extern wchar_t zf_opaque_atomic_fetch_sub_wchar(volatile struct ZFOpaqueAtomicType *object, wchar_t value);
+
 #endif /* zf_atomic_opaque_h */
 
