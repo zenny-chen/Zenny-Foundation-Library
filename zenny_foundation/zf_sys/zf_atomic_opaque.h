@@ -10,8 +10,8 @@
 #define zf_atomic_opaque_h
 
 #include "zf_sys.h"
-#include "zf_uchar.h"
 #include "zf_atomic.h"
+
 
 /// An opaque atomic type for the environment
 /// that does not support C11 atomic operations directly
@@ -47,100 +47,42 @@ extern void zf_opaque_atomic_flag_clear(volatile struct ZFOpaqueAtomicType *obje
 /// @return the boolean value
 extern bool zf_opaque_atomic_load_bool(volatile struct ZFOpaqueAtomicType *object);
 
-/// Atomically load the char value in the opaque atomic object
+/// Atomically load the 1-byte integer value in the opaque atomic object
 /// @param object pointer to the opaque atomic object
-/// @return the char value
-extern char zf_opaque_atomic_load_char(volatile struct ZFOpaqueAtomicType *object);
+/// @return the boolean value
+extern int8_t zf_opaque_atomic_load_byte(volatile struct ZFOpaqueAtomicType *object);
 
-/// Atomically load the int8_t value in the opaque atomic object
+/// Atomically load the 2-byte integer value in the opaque atomic object
 /// @param object pointer to the opaque atomic object
-/// @return the int8_t value
-extern int8_t zf_opaque_atomic_load_int8(volatile struct ZFOpaqueAtomicType *object);
+/// @return the boolean value
+extern int16_t zf_opaque_atomic_load_short(volatile struct ZFOpaqueAtomicType *object);
 
-/// Atomically load the uint8_t value in the opaque atomic object
+/// Atomically load the 4-byte integer value in the opaque atomic object
 /// @param object pointer to the opaque atomic object
-/// @return the unsigned char value
-extern uint8_t zf_opaque_atomic_load_uint8(volatile struct ZFOpaqueAtomicType *object);
- 
-/// Atomically load the int16_t value in the opaque atomic object
-/// @param object pointer to the opaque atomic object
-/// @return the int16_t value
-extern int16_t zf_opaque_atomic_load_int16(volatile struct ZFOpaqueAtomicType *object);
+/// @return the boolean value
+extern int32_t zf_opaque_atomic_load_int(volatile struct ZFOpaqueAtomicType *object);
 
-/// Atomically load the uint16_t value in the opaque atomic object
+/// Atomically load the 8-byte integer value in the opaque atomic object
 /// @param object pointer to the opaque atomic object
-/// @return the uint16_t value
-extern uint16_t zf_opaque_atomic_load_uint16(volatile struct ZFOpaqueAtomicType *object);
+/// @return the boolean value
+extern int64_t zf_opaque_atomic_load_long(volatile struct ZFOpaqueAtomicType *object);
 
-/// Atomically load the int32_t value in the opaque atomic object
-/// @param object pointer to the opaque atomic object
-/// @return the int32_t value
-extern int32_t zf_opaque_atomic_load_int32(volatile struct ZFOpaqueAtomicType *object);
-
-/// Atomically load the uint32_t value in the opaque atomic object
-/// @param object pointer to the opaque atomic object
-/// @return the uint32_t value
-extern uint32_t zf_opaque_atomic_load_uint32(volatile struct ZFOpaqueAtomicType *object);
-
-/// Atomically load the int value in the opaque atomic object
-/// @param object pointer to the opaque atomic object
-/// @return the int value
-extern int zf_opaque_atomic_load_int(volatile struct ZFOpaqueAtomicType *object);
-
-/// Atomically load the unsigned int value in the opaque atomic object
-/// @param object pointer to the opaque atomic object
-/// @return the unsigned int value
-extern unsigned zf_opaque_atomic_load_uint(volatile struct ZFOpaqueAtomicType *object);
-
-/// Atomically load the intptr_t value in the opaque atomic object
-/// @param object pointer to the opaque atomic object
-/// @return the intptr_t value
-extern intptr_t zf_opaque_atomic_load_intptr(volatile struct ZFOpaqueAtomicType *object);
-
-/// Atomically load the uintptr_t value in the opaque atomic object
-/// @param object pointer to the opaque atomic object
-/// @return the uintptr_t value
-extern uintptr_t zf_opaque_atomic_load_uintptr(volatile struct ZFOpaqueAtomicType *object);
-
-/// Atomically load the size_t value in the opaque atomic object
-/// @param object pointer to the opaque atomic object
-/// @return the size_t value
-extern size_t zf_opaque_atomic_load_size(volatile struct ZFOpaqueAtomicType *object);
-
-/// Atomically load the ssize_t value in the opaque atomic object
-/// @param object pointer to the opaque atomic object
-/// @return the ssize_t value
-extern ssize_t zf_opaque_atomic_load_ssize(volatile struct ZFOpaqueAtomicType *object);
-
-/// Atomically load the ptrdiff_t value in the opaque atomic object
-/// @param object pointer to the opaque atomic object
-/// @return the ptrdiff_t value
-extern ptrdiff_t zf_opaque_atomic_load_ptrdiff(volatile struct ZFOpaqueAtomicType *object);
-
-/// Atomically load the intmax_t value in the opaque atomic object
-/// @param object pointer to the opaque atomic object
-/// @return the intmax_t value
-extern intmax_t zf_opaque_atomic_load_intmax(volatile struct ZFOpaqueAtomicType *object);
-
-/// Atomically load the uintmax_t value in the opaque atomic object
-/// @param object pointer to the opaque atomic object
-/// @return the uintmax_t value
-extern uintmax_t zf_opaque_atomic_load_uintmax(volatile struct ZFOpaqueAtomicType *object);
-
-/// Atomically load the char16_t value in the opaque atomic object
-/// @param object pointer to the opaque atomic object
-/// @return the char16_t value
-extern char16_t zf_opaque_atomic_load_char16(volatile struct ZFOpaqueAtomicType *object);
-
-/// Atomically load the char32_t value in the opaque atomic object
-/// @param object pointer to the opaque atomic object
-/// @return the char32_t value
-extern char32_t zf_opaque_atomic_load_char32(volatile struct ZFOpaqueAtomicType *object);
-
-/// Atomically load the wchar_t value in the opaque atomic object
-/// @param object pointer to the opaque atomic object
-/// @return the wchar_t value
-extern wchar_t zf_opaque_atomic_load_wchar(volatile struct ZFOpaqueAtomicType *object);
+#define zf_opaque_atomic_load(object, pValue)   \
+        switch(sizeof(*(pValue))) {             \
+        case 1:             \
+            *(int8_t*)(pValue) = zf_opaque_atomic_load_byte(object);        \
+            break;          \
+        case 2:             \
+            *(int16_t*)(pValue) = zf_opaque_atomic_load_short(object);      \
+            break;          \
+        case 4:             \
+        default:            \
+            *(int32_t*)(pValue) = zf_opaque_atomic_load_int(object);        \
+            break;          \
+        case 8:             \
+            *(int64_t*)(pValue) = zf_opaque_atomic_load_long(object);       \
+            break;          \
+        }
 
 // MARK: atomic store operations
 
@@ -149,370 +91,240 @@ extern wchar_t zf_opaque_atomic_load_wchar(volatile struct ZFOpaqueAtomicType *o
 /// @param value the boolean value that'll be stored
 extern void zf_opaque_atomic_store_bool(volatile struct ZFOpaqueAtomicType *object, bool value);
 
-/// Atomically store the specified char value to the opaque atomic object
+/// Atomically store the specified 1-byte value to the opaque atomic object
 /// @param object pointer to the opaque atomic object
-/// @param value the char value that'll be stored
-extern void zf_opaque_atomic_store_char(volatile struct ZFOpaqueAtomicType *object, char value);
+/// @param value the 1-byte value that'll be stored
+extern void zf_opaque_atomic_store_byte(volatile struct ZFOpaqueAtomicType *object, int8_t value);
 
-/// Atomically store the specified int8_t value to the opaque atomic object
+/// Atomically store the specified 2-byte value to the opaque atomic object
 /// @param object pointer to the opaque atomic object
-/// @param value the int8_t value that'll be stored
-extern void zf_opaque_atomic_store_int8(volatile struct ZFOpaqueAtomicType *object, int8_t value);
+/// @param value the 2-byte value that'll be stored
+extern void zf_opaque_atomic_store_short(volatile struct ZFOpaqueAtomicType *object, int16_t value);
 
-/// Atomically store the specified uint8_t value to the opaque atomic object
+/// Atomically store the specified 4-byte value to the opaque atomic object
 /// @param object pointer to the opaque atomic object
-/// @param value the uint8_t value that'll be stored
-extern void zf_opaque_atomic_store_uint8(volatile struct ZFOpaqueAtomicType *object, uint8_t value);
+/// @param value the 4-byte value that'll be stored
+extern void zf_opaque_atomic_store_int(volatile struct ZFOpaqueAtomicType *object, int32_t value);
 
-/// Atomically store the specified int16_t value to the opaque atomic object
+/// Atomically store the specified 8-byte value to the opaque atomic object
 /// @param object pointer to the opaque atomic object
-/// @param value the int16_t value that'll be stored
-extern void zf_opaque_atomic_store_int16(volatile struct ZFOpaqueAtomicType *object, int16_t value);
+/// @param value the 8-byte value that'll be stored
+extern void zf_opaque_atomic_store_long(volatile struct ZFOpaqueAtomicType *object, int64_t value);
 
-/// Atomically store the specified uint16_t value to the opaque atomic object
-/// @param object pointer to the opaque atomic object
-/// @param value the uint16_t value that'll be stored
-extern void zf_opaque_atomic_store_uint16(volatile struct ZFOpaqueAtomicType *object, uint16_t value);
-
-/// Atomically store the specified int32_t value to the opaque atomic object
-/// @param object pointer to the opaque atomic object
-/// @param value the int32_t value that'll be stored
-extern void zf_opaque_atomic_store_int32(volatile struct ZFOpaqueAtomicType *object, int32_t value);
-
-/// Atomically store the specified uint32_t value to the opaque atomic object
-/// @param object pointer to the opaque atomic object
-/// @param value the uint32_t value that'll be stored
-extern void zf_opaque_atomic_store_uint32(volatile struct ZFOpaqueAtomicType *object, uint32_t value);
-
-/// Atomically store the specified int value to the opaque atomic object
-/// @param object pointer to the opaque atomic object
-/// @param value the int value that'll be stored
-extern void zf_opaque_atomic_store_int(volatile struct ZFOpaqueAtomicType *object, int value);
-
-/// Atomically store the specified unsigned int value to the opaque atomic object
-/// @param object pointer to the opaque atomic object
-/// @param value the unsigned int value that'll be stored
-extern void zf_opaque_atomic_store_uint(volatile struct ZFOpaqueAtomicType *object, unsigned value);
-
-/// Atomically store the specified intptr_t value to the opaque atomic object
-/// @param object pointer to the opaque atomic object
-/// @param value the intptr_t value that'll be stored
-extern void zf_opaque_atomic_store_intptr(volatile struct ZFOpaqueAtomicType *object, intptr_t value);
-
-/// Atomically store the specified uintptr_t value to the opaque atomic object
-/// @param object pointer to the opaque atomic object
-/// @param value the uintptr_t value that'll be stored
-extern void zf_opaque_atomic_store_uintptr(volatile struct ZFOpaqueAtomicType *object, uintptr_t value);
-
-/// Atomically store the specified size_t value to the opaque atomic object
-/// @param object pointer to the opaque atomic object
-/// @param value the size_t value that'll be stored
-extern void zf_opaque_atomic_store_size(volatile struct ZFOpaqueAtomicType *object, size_t value);
-
-/// Atomically store the specified ssize_t value to the opaque atomic object
-/// @param object pointer to the opaque atomic object
-/// @param value the ssize_t value that'll be stored
-extern void zf_opaque_atomic_store_ssize(volatile struct ZFOpaqueAtomicType *object, ssize_t value);
-
-/// Atomically store the specified ptrdiff_t value to the opaque atomic object
-/// @param object pointer to the opaque atomic object
-/// @param value the ptrdiff_t value that'll be stored
-extern void zf_opaque_atomic_store_ptrdiff(volatile struct ZFOpaqueAtomicType *object, ptrdiff_t value);
-
-/// Atomically store the specified intmax_t value to the opaque atomic object
-/// @param object pointer to the opaque atomic object
-/// @param value the intmax_t value that'll be stored
-extern void zf_opaque_atomic_store_intmax(volatile struct ZFOpaqueAtomicType *object, intmax_t value);
-
-/// Atomically store the specified uintmax_t value to the opaque atomic object
-/// @param object pointer to the opaque atomic object
-/// @param value the uintmax_t value that'll be stored
-extern void zf_opaque_atomic_store_uintmax(volatile struct ZFOpaqueAtomicType *object, uintmax_t value);
-
-/// Atomically store the specified char16_t value to the opaque atomic object
-/// @param object pointer to the opaque atomic object
-/// @param value the char16_t value that'll be stored
-extern void zf_opaque_atomic_store_char16(volatile struct ZFOpaqueAtomicType *object, char16_t value);
-
-/// Atomically store the specified char32_t value to the opaque atomic object
-/// @param object pointer to the opaque atomic object
-/// @param value the char32_t value that'll be stored
-extern void zf_opaque_atomic_store_char32(volatile struct ZFOpaqueAtomicType *object, char32_t value);
-
-/// Atomically store the specified wchar_t value to the opaque atomic object
-/// @param object pointer to the opaque atomic object
-/// @param value the wchar_t value that'll be stored
-extern void zf_opaque_atomic_store_wchar(volatile struct ZFOpaqueAtomicType *object, wchar_t value);
+#define zf_opaque_atomic_store(object, value)   \
+    switch(sizeof(value)) {     \
+    case 1:                     \
+        zf_opaque_atomic_store_byte((object), (int8_t)value);       \
+        break;                  \
+    case 2:                     \
+        zf_opaque_atomic_store_short((object), (int16_t)value);     \
+        break;                  \
+    case 4:                     \
+    default:                    \
+        zf_opaque_atomic_store_int((object), (int32_t)value);       \
+        break;                  \
+    case 8:                     \
+        zf_opaque_atomic_store_long((object), (int64_t)value);      \
+        break;                  \
+    }
 
 // MARK: atomic fetch add operations
 
-/// Atomically add the char value in the opaque atomic object and the specified value,
+/// Atomically add the 1-byte value in the opaque atomic object and the specified value,
 /// and store the result to the atomic object.
 /// @param object pointer to the opaque atomic object
 /// @param value the addend
 /// @return the original value stored in the opaque atomic object before this operation
-extern char zf_opaque_atomic_fetch_add_char(volatile struct ZFOpaqueAtomicType *object, char value);
+extern int8_t zf_opaque_atomic_fetch_add_byte(volatile struct ZFOpaqueAtomicType *object, int8_t value);
 
-/// Atomically add the int8_t value in the opaque atomic object and the specified value,
+/// Atomically add the 2-byte value in the opaque atomic object and the specified value,
 /// and store the result to the atomic object.
 /// @param object pointer to the opaque atomic object
 /// @param value the addend
 /// @return the original value stored in the opaque atomic object before this operation
-extern int8_t zf_opaque_atomic_fetch_add_int8(volatile struct ZFOpaqueAtomicType *object, int8_t value);
+extern int16_t zf_opaque_atomic_fetch_add_short(volatile struct ZFOpaqueAtomicType *object, int16_t value);
 
-/// Atomically add the uint8_t value in the opaque atomic object and the specified value,
+/// Atomically add the 4-byte value in the opaque atomic object and the specified value,
 /// and store the result to the atomic object.
 /// @param object pointer to the opaque atomic object
 /// @param value the addend
 /// @return the original value stored in the opaque atomic object before this operation
-extern uint8_t zf_opaque_atomic_fetch_add_uint8(volatile struct ZFOpaqueAtomicType *object, uint8_t value);
+extern int32_t zf_opaque_atomic_fetch_add_int(volatile struct ZFOpaqueAtomicType *object, int32_t value);
 
-/// Atomically add the int16_t value in the opaque atomic object and the specified value,
+/// Atomically add the 8-byte value in the opaque atomic object and the specified value,
 /// and store the result to the atomic object.
 /// @param object pointer to the opaque atomic object
 /// @param value the addend
 /// @return the original value stored in the opaque atomic object before this operation
-extern int16_t zf_opaque_atomic_fetch_add_int16(volatile struct ZFOpaqueAtomicType *object, int16_t value);
+extern int64_t zf_opaque_atomic_fetch_add_long(volatile struct ZFOpaqueAtomicType *object, int64_t value);
 
-/// Atomically add the uint16_t value in the opaque atomic object and the specified value,
-/// and store the result to the atomic object.
-/// @param object pointer to the opaque atomic object
-/// @param value the addend
-/// @return the original value stored in the opaque atomic object before this operation
-extern uint16_t zf_opaque_atomic_fetch_add_uint16(volatile struct ZFOpaqueAtomicType *object, uint16_t value);
-
-/// Atomically add the int32_t value in the opaque atomic object and the specified value,
-/// and store the result to the atomic object.
-/// @param object pointer to the opaque atomic object
-/// @param value the addend
-/// @return the original value stored in the opaque atomic object before this operation
-extern int32_t zf_opaque_atomic_fetch_add_int32(volatile struct ZFOpaqueAtomicType *object, int32_t value);
-
-/// Atomically add the uint32_t value in the opaque atomic object and the specified value,
-/// and store the result to the atomic object.
-/// @param object pointer to the opaque atomic object
-/// @param value the addend
-/// @return the original value stored in the opaque atomic object before this operation
-extern uint32_t zf_opaque_atomic_fetch_add_uint32(volatile struct ZFOpaqueAtomicType *object, uint32_t value);
-
-/// Atomically add the int value in the opaque atomic object and the specified value,
-/// and store the result to the atomic object.
-/// @param object pointer to the opaque atomic object
-/// @param value the addend
-/// @return the original value stored in the opaque atomic object before this operation
-extern int zf_opaque_atomic_fetch_add_int(volatile struct ZFOpaqueAtomicType *object, int value);
-
-/// Atomically add the int value unsigned in the opaque atomic object and the specified value,
-/// and store the result to the atomic object.
-/// @param object pointer to the opaque atomic object
-/// @param value the addend
-/// @return the original value stored in the opaque atomic object before this operation
-extern unsigned zf_opaque_atomic_fetch_add_uint(volatile struct ZFOpaqueAtomicType *object, unsigned value);
-
-/// Atomically add the intptr_t value in the opaque atomic object and the specified value,
-/// and store the result to the atomic object.
-/// @param object pointer to the opaque atomic object
-/// @param value the addend
-/// @return the original value stored in the opaque atomic object before this operation
-extern intptr_t zf_opaque_atomic_fetch_add_intptr(volatile struct ZFOpaqueAtomicType *object, intptr_t value);
-
-/// Atomically add the uintptr_t value in the opaque atomic object and the specified value,
-/// and store the result to the atomic object.
-/// @param object pointer to the opaque atomic object
-/// @param value the addend
-/// @return the original value stored in the opaque atomic object before this operation
-extern uintptr_t zf_opaque_atomic_fetch_add_uintptr(volatile struct ZFOpaqueAtomicType *object, uintptr_t value);
-
-/// Atomically add the size_t value in the opaque atomic object and the specified value,
-/// and store the result to the atomic object.
-/// @param object pointer to the opaque atomic object
-/// @param value the addend
-/// @return the original value stored in the opaque atomic object before this operation
-extern size_t zf_opaque_atomic_fetch_add_size(volatile struct ZFOpaqueAtomicType *object, size_t value);
-
-/// Atomically add the ssize_t value in the opaque atomic object and the specified value,
-/// and store the result to the atomic object.
-/// @param object pointer to the opaque atomic object
-/// @param value the addend
-/// @return the original value stored in the opaque atomic object before this operation
-extern ssize_t zf_opaque_atomic_fetch_add_ssize(volatile struct ZFOpaqueAtomicType *object, ssize_t value);
-
-/// Atomically add the ptrdiff_t value in the opaque atomic object and the specified value,
-/// and store the result to the atomic object.
-/// @param object pointer to the opaque atomic object
-/// @param value the addend
-/// @return the original value stored in the opaque atomic object before this operation
-extern ptrdiff_t zf_opaque_atomic_fetch_add_ptrdiff(volatile struct ZFOpaqueAtomicType *object, ptrdiff_t value);
-
-/// Atomically add the intmax_t value in the opaque atomic object and the specified value,
-/// and store the result to the atomic object.
-/// @param object pointer to the opaque atomic object
-/// @param value the addend
-/// @return the original value stored in the opaque atomic object before this operation
-extern intmax_t zf_opaque_atomic_fetch_add_intmax(volatile struct ZFOpaqueAtomicType *object, intmax_t value);
-
-/// Atomically add the intmax_t value in the opaque atomic object and the specified value,
-/// and store the result to the atomic object.
-/// @param object pointer to the opaque atomic object
-/// @param value the addend
-/// @return the original value stored in the opaque atomic object before this operation
-extern uintmax_t zf_opaque_atomic_fetch_add_uintmax(volatile struct ZFOpaqueAtomicType *object, intmax_t value);
-
-/// Atomically add the char16_t value in the opaque atomic object and the specified value,
-/// and store the result to the atomic object.
-/// @param object pointer to the opaque atomic object
-/// @param value the addend
-/// @return the original value stored in the opaque atomic object before this operation
-extern char16_t zf_opaque_atomic_fetch_add_char16(volatile struct ZFOpaqueAtomicType *object, char16_t value);
-
-/// Atomically add the char32_t value in the opaque atomic object and the specified value,
-/// and store the result to the atomic object.
-/// @param object pointer to the opaque atomic object
-/// @param value the addend
-/// @return the original value stored in the opaque atomic object before this operation
-extern char32_t zf_opaque_atomic_fetch_add_char32(volatile struct ZFOpaqueAtomicType *object, char32_t value);
-
-/// Atomically add the wchar_t value in the opaque atomic object and the specified value,
-/// and store the result to the atomic object.
-/// @param object pointer to the opaque atomic object
-/// @param value the addend
-/// @return the original value stored in the opaque atomic object before this operation
-extern wchar_t zf_opaque_atomic_fetch_add_wchar(volatile struct ZFOpaqueAtomicType *object, wchar_t value);
+#define zf_opaque_atomic_fetch_add(object, value)   type_cast(value)  \
+    (   sizeof(value) == 1 ? zf_opaque_atomic_fetch_add_byte((object), (int8_t)(value)) : \
+        (sizeof(value) == 2 ? zf_opaque_atomic_fetch_add_short((object), (int16_t)(value)) : \
+        (sizeof(value) == 4 ? zf_opaque_atomic_fetch_add_int((object), (int32_t)(value)) : \
+        (sizeof(value) == 8 ? zf_opaque_atomic_fetch_add_long((object), (int64_t)(value)) : \
+        zf_opaque_atomic_fetch_add_int((object), (int32_t)(value)) ) ) )       \
+    )
 
 // MARK: atomic fetch subtraction operations
 
-/// Atomically subtract the specified value from the char value in the opaque atomic object,
+/// Atomically subtract the specified value from the 1-byte value in the opaque atomic object,
 /// and store the result to the atomic object.
 /// @param object pointer to the opaque atomic object
 /// @param value the subtrahend
 /// @return the original value stored in the opaque atomic object before this operation
-extern char zf_opaque_atomic_fetch_sub_char(volatile struct ZFOpaqueAtomicType *object, char value);
+extern int8_t zf_opaque_atomic_fetch_sub_byte(volatile struct ZFOpaqueAtomicType *object, int8_t value);
 
-/// Atomically subtract the specified value from the int8_t value in the opaque atomic object,
+/// Atomically subtract the specified value from the 2-byte value in the opaque atomic object,
 /// and store the result to the atomic object.
 /// @param object pointer to the opaque atomic object
 /// @param value the subtrahend
 /// @return the original value stored in the opaque atomic object before this operation
-extern int8_t zf_opaque_atomic_fetch_sub_int8(volatile struct ZFOpaqueAtomicType *object, int8_t value);
+extern int16_t zf_opaque_atomic_fetch_sub_short(volatile struct ZFOpaqueAtomicType *object, int16_t value);
 
-/// Atomically subtract the specified value from the uint8_t value in the opaque atomic object,
+/// Atomically subtract the specified value from the 4-byte value in the opaque atomic object,
 /// and store the result to the atomic object.
 /// @param object pointer to the opaque atomic object
 /// @param value the subtrahend
 /// @return the original value stored in the opaque atomic object before this operation
-extern uint8_t zf_opaque_atomic_fetch_sub_uint8(volatile struct ZFOpaqueAtomicType *object, uint8_t value);
+extern int32_t zf_opaque_atomic_fetch_sub_int(volatile struct ZFOpaqueAtomicType *object, int32_t value);
 
-/// Atomically subtract the specified value from the int16_t value in the opaque atomic object,
+/// Atomically subtract the specified value from the 4-byte value in the opaque atomic object,
 /// and store the result to the atomic object.
 /// @param object pointer to the opaque atomic object
 /// @param value the subtrahend
 /// @return the original value stored in the opaque atomic object before this operation
-extern int16_t zf_opaque_atomic_fetch_sub_int16(volatile struct ZFOpaqueAtomicType *object, int16_t value);
+extern int64_t zf_opaque_atomic_fetch_sub_long(volatile struct ZFOpaqueAtomicType *object, int64_t value);
 
-/// Atomically subtract the specified value from the uint16_t value in the opaque atomic object,
-/// and store the result to the atomic object.
-/// @param object pointer to the opaque atomic object
-/// @param value the subtrahend
-/// @return the original value stored in the opaque atomic object before this operation
-extern uint16_t zf_opaque_atomic_fetch_sub_uint16(volatile struct ZFOpaqueAtomicType *object, uint16_t value);
+#define zf_opaque_atomic_fetch_sub(object, value)   type_cast(value)    \
+    (   sizeof(value) == 1 ? zf_opaque_atomic_fetch_sub_byte((object), (int8_t)(value)) : \
+        (sizeof(value) == 2 ? zf_opaque_atomic_fetch_sub_short((object), (int16_t)(value)) : \
+        (sizeof(value) == 4 ? zf_opaque_atomic_fetch_sub_int((object), (int32_t)(value)) : \
+        (sizeof(value) == 8 ? zf_opaque_atomic_fetch_sub_long((object), (int64_t)(value)) : \
+        zf_opaque_atomic_fetch_sub_int((object), (int32_t)(value)) ) ) )       \
+    )
 
-/// Atomically subtract the specified value from the int32_t value in the opaque atomic object,
-/// and store the result to the atomic object.
-/// @param object pointer to the opaque atomic object
-/// @param value the subtrahend
-/// @return the original value stored in the opaque atomic object before this operation
-extern int32_t zf_opaque_atomic_fetch_sub_int32(volatile struct ZFOpaqueAtomicType *object, int32_t value);
+// MARK: atomic fetch or operations
 
-/// Atomically subtract the specified value from the uint32_t value in the opaque atomic object,
+/// Atomically bitwise OR the the 1-byte value in the opaque atomic object with the specified value,
 /// and store the result to the atomic object.
 /// @param object pointer to the opaque atomic object
 /// @param value the subtrahend
 /// @return the original value stored in the opaque atomic object before this operation
-extern uint32_t zf_opaque_atomic_fetch_sub_uint32(volatile struct ZFOpaqueAtomicType *object, uint32_t value);
+extern int8_t zf_opaque_atomic_fetch_or_byte(volatile struct ZFOpaqueAtomicType *object, int8_t value);
 
-/// Atomically subtract the specified value from the int value in the opaque atomic object,
+/// Atomically bitwise OR the the 2-byte value in the opaque atomic object with the specified value,
 /// and store the result to the atomic object.
 /// @param object pointer to the opaque atomic object
 /// @param value the subtrahend
 /// @return the original value stored in the opaque atomic object before this operation
-extern int zf_opaque_atomic_fetch_sub_int(volatile struct ZFOpaqueAtomicType *object, int value);
+extern int16_t zf_opaque_atomic_fetch_or_short(volatile struct ZFOpaqueAtomicType *object, int16_t value);
 
-/// Atomically subtract the specified value from the unsigned int value in the opaque atomic object,
+/// Atomically bitwise OR the the 4-byte value in the opaque atomic object with the specified value,
 /// and store the result to the atomic object.
 /// @param object pointer to the opaque atomic object
 /// @param value the subtrahend
 /// @return the original value stored in the opaque atomic object before this operation
-extern unsigned zf_opaque_atomic_fetch_sub_uint(volatile struct ZFOpaqueAtomicType *object, unsigned value);
+extern int32_t zf_opaque_atomic_fetch_or_int(volatile struct ZFOpaqueAtomicType *object, int32_t value);
 
-/// Atomically subtract the specified value from the intptr_t value in the opaque atomic object,
+/// Atomically bitwise OR the the 8-byte value in the opaque atomic object with the specified value,
 /// and store the result to the atomic object.
 /// @param object pointer to the opaque atomic object
 /// @param value the subtrahend
 /// @return the original value stored in the opaque atomic object before this operation
-extern intptr_t zf_opaque_atomic_fetch_sub_intptr(volatile struct ZFOpaqueAtomicType *object, intptr_t value);
+extern int64_t zf_opaque_atomic_fetch_or_long(volatile struct ZFOpaqueAtomicType *object, int64_t value);
 
-/// Atomically subtract the specified value from the uintptr_t value in the opaque atomic object,
-/// and store the result to the atomic object.
-/// @param object pointer to the opaque atomic object
-/// @param value the subtrahend
-/// @return the original value stored in the opaque atomic object before this operation
-extern uintptr_t zf_opaque_atomic_fetch_sub_uintptr(volatile struct ZFOpaqueAtomicType *object, uintptr_t value);
+#define zf_opaque_atomic_fetch_or(object, value)   type_cast(value)     \
+        (   sizeof(value) == 1 ? zf_opaque_atomic_fetch_or_byte((object), (int8_t)(value)) : \
+            (sizeof(value) == 2 ? zf_opaque_atomic_fetch_or_short((object), (int16_t)(value)) : \
+            (sizeof(value) == 4 ? zf_opaque_atomic_fetch_or_int((object), (int32_t)(value)) : \
+            (sizeof(value) == 8 ? zf_opaque_atomic_fetch_or_long((object), (int64_t)(value)) : \
+            zf_opaque_atomic_fetch_or_int((object), (int32_t)(value)) ) ) )       \
+        )
 
-/// Atomically subtract the specified value from the size_t value in the opaque atomic object,
-/// and store the result to the atomic object.
-/// @param object pointer to the opaque atomic object
-/// @param value the subtrahend
-/// @return the original value stored in the opaque atomic object before this operation
-extern size_t zf_opaque_atomic_fetch_sub_size(volatile struct ZFOpaqueAtomicType *object, size_t value);
+// MARK: atomic fetch xor operations
 
-/// Atomically subtract the specified value from the size_t value in the opaque atomic object,
+/// Atomically bitwise XOR the the 1-byte value in the opaque atomic object with the specified value,
 /// and store the result to the atomic object.
 /// @param object pointer to the opaque atomic object
 /// @param value the subtrahend
 /// @return the original value stored in the opaque atomic object before this operation
-extern ssize_t zf_opaque_atomic_fetch_sub_ssize(volatile struct ZFOpaqueAtomicType *object, ssize_t value);
+extern int8_t zf_opaque_atomic_fetch_xor_byte(volatile struct ZFOpaqueAtomicType *object, int8_t value);
 
-/// Atomically subtract the specified value from the ptrdiff_t value in the opaque atomic object,
+/// Atomically bitwise XOR the the 2-byte value in the opaque atomic object with the specified value,
 /// and store the result to the atomic object.
 /// @param object pointer to the opaque atomic object
 /// @param value the subtrahend
 /// @return the original value stored in the opaque atomic object before this operation
-extern ptrdiff_t zf_opaque_atomic_fetch_sub_ptrdiff(volatile struct ZFOpaqueAtomicType *object, ptrdiff_t value);
+extern int16_t zf_opaque_atomic_fetch_xor_short(volatile struct ZFOpaqueAtomicType *object, int16_t value);
 
-/// Atomically subtract the specified value from the intmax_t value in the opaque atomic object,
+/// Atomically bitwise XOR the the 4-byte value in the opaque atomic object with the specified value,
 /// and store the result to the atomic object.
 /// @param object pointer to the opaque atomic object
 /// @param value the subtrahend
 /// @return the original value stored in the opaque atomic object before this operation
-extern intmax_t zf_opaque_atomic_fetch_sub_intmax(volatile struct ZFOpaqueAtomicType *object, intmax_t value);
+extern int32_t zf_opaque_atomic_fetch_xor_int(volatile struct ZFOpaqueAtomicType *object, int32_t value);
 
-/// Atomically subtract the specified value from the uintmax_t value in the opaque atomic object,
+/// Atomically bitwise XOR the the 8-byte value in the opaque atomic object with the specified value,
 /// and store the result to the atomic object.
 /// @param object pointer to the opaque atomic object
 /// @param value the subtrahend
 /// @return the original value stored in the opaque atomic object before this operation
-extern uintmax_t zf_opaque_atomic_fetch_sub_uintmax(volatile struct ZFOpaqueAtomicType *object, uintmax_t value);
+extern int64_t zf_opaque_atomic_fetch_xor_long(volatile struct ZFOpaqueAtomicType *object, int64_t value);
 
-/// Atomically subtract the specified value from the char16_t value in the opaque atomic object,
-/// and store the result to the atomic object.
-/// @param object pointer to the opaque atomic object
-/// @param value the subtrahend
-/// @return the original value stored in the opaque atomic object before this operation
-extern char16_t zf_opaque_atomic_fetch_sub_char16(volatile struct ZFOpaqueAtomicType *object, char16_t value);
+#define zf_opaque_atomic_fetch_xor(object, value)   type_cast(value)    \
+    (   sizeof(value) == 1 ? zf_opaque_atomic_fetch_xor_byte((object), (int8_t)(value)) : \
+        (sizeof(value) == 2 ? zf_opaque_atomic_fetch_xor_short((object), (int16_t)(value)) : \
+        (sizeof(value) == 4 ? zf_opaque_atomic_fetch_xor_int((object), (int32_t)(value)) : \
+        (sizeof(value) == 8 ? zf_opaque_atomic_fetch_xor_long((object), (int64_t)(value)) : \
+        zf_opaque_atomic_fetch_xor_int((object), (int32_t)(value)) ) ) )       \
+    )
 
-/// Atomically subtract the specified value from the char32_t value in the opaque atomic object,
-/// and store the result to the atomic object.
-/// @param object pointer to the opaque atomic object
-/// @param value the subtrahend
-/// @return the original value stored in the opaque atomic object before this operation
-extern char32_t zf_opaque_atomic_fetch_sub_char32(volatile struct ZFOpaqueAtomicType *object, char32_t value);
+// MARK: atomic fetch and operations
 
-/// Atomically subtract the specified value from the wchar_t value in the opaque atomic object,
+/// Atomically bitwise AND the the 1-byte value in the opaque atomic object with the specified value,
 /// and store the result to the atomic object.
 /// @param object pointer to the opaque atomic object
 /// @param value the subtrahend
 /// @return the original value stored in the opaque atomic object before this operation
-extern wchar_t zf_opaque_atomic_fetch_sub_wchar(volatile struct ZFOpaqueAtomicType *object, wchar_t value);
+extern int8_t zf_opaque_atomic_fetch_and_byte(volatile struct ZFOpaqueAtomicType *object, int8_t value);
+
+/// Atomically bitwise AND the the 2-byte value in the opaque atomic object with the specified value,
+/// and store the result to the atomic object.
+/// @param object pointer to the opaque atomic object
+/// @param value the subtrahend
+/// @return the original value stored in the opaque atomic object before this operation
+extern int16_t zf_opaque_atomic_fetch_and_short(volatile struct ZFOpaqueAtomicType *object, int16_t value);
+
+/// Atomically bitwise AND the the 2-byte value in the opaque atomic object with the specified value,
+/// and store the result to the atomic object.
+/// @param object pointer to the opaque atomic object
+/// @param value the subtrahend
+/// @return the original value stored in the opaque atomic object before this operation
+extern int16_t zf_opaque_atomic_fetch_and_short(volatile struct ZFOpaqueAtomicType *object, int16_t value);
+
+/// Atomically bitwise AND the the 4-byte value in the opaque atomic object with the specified value,
+/// and store the result to the atomic object.
+/// @param object pointer to the opaque atomic object
+/// @param value the subtrahend
+/// @return the original value stored in the opaque atomic object before this operation
+extern int32_t zf_opaque_atomic_fetch_and_int(volatile struct ZFOpaqueAtomicType *object, int32_t value);
+
+/// Atomically bitwise AND the the 8-byte value in the opaque atomic object with the specified value,
+/// and store the result to the atomic object.
+/// @param object pointer to the opaque atomic object
+/// @param value the subtrahend
+/// @return the original value stored in the opaque atomic object before this operation
+extern int64_t zf_opaque_atomic_fetch_and_long(volatile struct ZFOpaqueAtomicType *object, int64_t value);
+
+#define zf_opaque_atomic_fetch_and(object, value)   type_cast(value)    \
+    (   sizeof(value) == 1 ? zf_opaque_atomic_fetch_and_byte((object), (int8_t)(value)) : \
+        (sizeof(value) == 2 ? zf_opaque_atomic_fetch_and_short((object), (int16_t)(value)) : \
+        (sizeof(value) == 4 ? zf_opaque_atomic_fetch_and_int((object), (int32_t)(value)) : \
+        (sizeof(value) == 8 ? zf_opaque_atomic_fetch_and_long((object), (int64_t)(value)) : \
+        zf_opaque_atomic_fetch_and_int((object), (int32_t)(value)) ) ) )       \
+    )
+
 
 #endif /* zf_atomic_opaque_h */
 
