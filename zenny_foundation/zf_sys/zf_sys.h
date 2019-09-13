@@ -24,19 +24,9 @@
 #include <stdalign.h>
 #include <stdnoreturn.h>
 
-#define thread_local    _Thread_local
-
-#ifdef __GNUC__
-// GNU C extensions
-
-#ifndef let
-#define let     __auto_type
-#endif
-
-#endif
+#define thread_local        _Thread_local
 
 #else
-
 // For MSVC
 
 #define alignof             _Alignof
@@ -50,6 +40,22 @@
 typedef ptrdiff_t   ssize_t;
 
 #endif  // #ifndef _MSC_VER
+
+
+#ifdef __GNUC__
+// GNU C extensions
+
+#ifndef let
+#define let                 __auto_type
+#endif
+
+#define type_cast(expr)     (typeof(expr))
+
+#else
+
+#define type_cast(expr)
+
+#endif  // #ifdef __GNUC__
 
 
 // MARK: stdio relevant
