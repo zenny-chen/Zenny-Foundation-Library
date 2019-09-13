@@ -37,7 +37,7 @@
 #define noreturn            __declspec(noreturn)
 
 /// signed size_t type which may be used in this foundation library
-typedef ptrdiff_t   ssize_t;
+typedef ptrdiff_t           ssize_t;
 
 #endif  // #ifndef _MSC_VER
 
