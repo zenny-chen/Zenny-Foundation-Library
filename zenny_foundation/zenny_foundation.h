@@ -77,7 +77,7 @@ static inline void ZFInitObject(struct ZFObject *obj)
 /// Create a ZFObject instance
 /// @param obj_id the object identifier
 /// @return a ZFObject instance
-#define ZF_CREATE_OBJECT(obj_id)    {  ZF_MALLOC(obj_id, sizeof(*(obj_id))); ZFInitObject(obj_id); }
+#define ZF_CREATE_OBJECT(obj_id)    do{  ZF_MALLOC(obj_id, sizeof(*(obj_id))); ZFInitObject(obj_id); } while(false)
 
 /// Release a specified ZFObject instance
 /// @param obj a ZFObject compliant instance
