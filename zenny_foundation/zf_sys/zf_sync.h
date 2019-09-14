@@ -9,14 +9,13 @@
 #ifndef zf_sync_h
 #define zf_sync_h
 
+#include "zf_sys.h"
 #include "zf_atomic.h"
 
 #define ZF_SPIN_LOCK_TRY_COUNT       100
 
 #ifndef _WIN32
-
 // Unix-like OS environment
-#include <unistd.h>
 
 /// Let the current thread briefly sleep and make another thread run
 static inline void zf_nap(void)
@@ -25,9 +24,7 @@ static inline void zf_nap(void)
 }
 
 #else
-
 // Windows OS environment
-#include "zf_sys.h"
 
 /// Let the current thread briefly sleep and make another thread run
 static inline void zf_nap(void)

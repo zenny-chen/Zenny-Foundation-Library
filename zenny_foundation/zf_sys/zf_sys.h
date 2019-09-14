@@ -10,8 +10,15 @@
 #define zf_sys_h
 
 #ifdef _WIN32
+// Windows platforms
 #include <Windows.h>
-#endif
+
+#else
+// Unix-like platforms
+#include <unistd.h>
+
+#endif // #ifdef _WIN32
+
 
 #include <stdio.h>
 #include <stddef.h>
@@ -20,6 +27,7 @@
 #include <string.h>
 
 #ifndef _MSC_VER
+// Compilers that support most of C11
 
 #include <stdalign.h>
 #include <stdnoreturn.h>

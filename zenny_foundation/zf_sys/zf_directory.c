@@ -169,7 +169,6 @@ void zf_remove_directory(const char *path)
 // Other unix-like operating systems but not Apple platforms
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <unistd.h>
 #include <dirent.h>
 #include <fcntl.h>
 
