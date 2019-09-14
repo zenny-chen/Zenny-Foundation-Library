@@ -35,7 +35,9 @@ if currPlatform == "darwin":
 
 
 includes = [
-            "./"
+            "./",
+            "./zenny_foundation/",
+            "./zenny_foundation/zf_sys/"
             ]
 
 # sources
