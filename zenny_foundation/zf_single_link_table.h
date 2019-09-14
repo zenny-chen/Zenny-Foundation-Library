@@ -37,7 +37,9 @@ struct ZFSingleLinkTable
 /// Create a single link table.
 /// @param obj_id the object identifier
 /// @return a single link table
-#define ZF_CREATE_SINGLE_LINK_TABLE(obj_id)    {  ZF_MALLOC(obj_id, sizeof(*(obj_id))); ZFInitSingleLinkTable(obj_id); }
+#define ZF_CREATE_SINGLE_LINK_TABLE(obj_id)    do {  ZF_MALLOC(obj_id, sizeof(*(obj_id)));    \
+                                                     ZFInitSingleLinkTable(obj_id);           \
+                                               } while(false)
 
 /// Create a single link node with a specified ZFObject object.
 /// @param obj_id the object identifier
