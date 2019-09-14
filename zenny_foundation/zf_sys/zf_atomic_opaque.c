@@ -189,3 +189,51 @@ int64_t zf_opaque_atomic_fetch_and_long(volatile struct ZFOpaqueAtomicType *obje
     return atomic_fetch_and((volatile _Atomic(int64_t)*)object, value);
 }
 
+// MARK: atomic exchange operations
+
+int8_t zf_opaque_atomic_exchange_byte(volatile struct ZFOpaqueAtomicType *object, int8_t value)
+{
+    return atomic_exchange((volatile _Atomic(int8_t)*)object, value);
+}
+
+int16_t zf_opaque_atomic_exchange_short(volatile struct ZFOpaqueAtomicType *object, int16_t value)
+{
+    return atomic_exchange((volatile _Atomic(int16_t)*)object, value);
+}
+
+int32_t zf_opaque_atomic_exchange_int(volatile struct ZFOpaqueAtomicType *object, int32_t value)
+{
+    return atomic_exchange((volatile _Atomic(int32_t)*)object, value);
+}
+
+int64_t zf_opaque_atomic_exchange_long(volatile struct ZFOpaqueAtomicType *object, int64_t value)
+{
+    return atomic_exchange((volatile _Atomic(int64_t)*)object, value);
+}
+
+// MARK: atomic compare and exchange operations
+
+bool zf_opaque_atomic_compare_exchange_byte(volatile struct ZFOpaqueAtomicType *object,
+                                            int8_t *expected, int8_t desired)
+{
+    return atomic_compare_exchange_strong((volatile _Atomic(int8_t)*)object, expected, desired);
+}
+
+bool zf_opaque_atomic_compare_exchange_short(volatile struct ZFOpaqueAtomicType *object,
+                                             int16_t *expected, int16_t desired)
+{
+    return atomic_compare_exchange_strong((volatile _Atomic(int16_t)*)object, expected, desired);
+}
+
+bool zf_opaque_atomic_compare_exchange_int(volatile struct ZFOpaqueAtomicType *object,
+                                           int32_t *expected, int32_t desired)
+{
+    return atomic_compare_exchange_strong((volatile _Atomic(int32_t)*)object, expected, desired);
+}
+
+bool zf_opaque_atomic_compare_exchange_long(volatile struct ZFOpaqueAtomicType *object,
+                                            int64_t *expected, int64_t desired)
+{
+    return atomic_compare_exchange_strong((volatile _Atomic(int64_t)*)object, expected, desired);
+}
+
