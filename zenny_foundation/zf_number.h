@@ -121,7 +121,9 @@ struct ZFNumber
 /// @param value the value of the number object
 /// @param encoding the number encoding
 /// @return a ZFNumber object
-#define ZF_CREATE_NUMBER(obj_id, value, encoding)   { ZF_MALLOC(obj_id, sizeof(*(obj_id))); ZFInitNumber((obj_id), (value), (encoding)); }
+#define ZF_CREATE_NUMBER(obj_id, value, encoding)   do { ZF_MALLOC(obj_id, sizeof(*(obj_id)));            \
+                                                        ZFInitNumber((obj_id), (value), (encoding));      \
+                                                    } while(false)
 
 /// An easy way to wrap a basic number value into a ZFNumber object
 #define ZF_NUMBER(num)  ({  union ZFNumberValueType value = { }; \
