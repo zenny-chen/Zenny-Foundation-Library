@@ -17,6 +17,16 @@ if not foundPlatform:
 
 print("Current platform: " + currPlatform)
 
+
+machine = None
+if currPlatform != 'win32' and currPlatform != 'others':
+    machine = os.uname()[4]
+    print("Current machine: " + machine)
+    if 'armv7' in machine:
+        machine = 'armv7'
+    else:
+        machine = None
+
 # Specify C compiler
 cc = "gcc"
 
@@ -33,6 +43,10 @@ cflags = [
 if currPlatform == "darwin":
     cflags.append("-x objective-c -fmessage-length=0 -fmacro-backtrace-limit=0 -fobjc-weak -fmodules -gmodules -fmodules-prune-interval=86400 -fmodules-prune-after=345600 -fno-common -fno-objc-exceptions -fasm-blocks -fstrict-aliasing")
 
+# For building on Raspberry Pi whose machine is armv7l
+# which is not proper for the compilation
+if machine != None:
+    cflags.append('-march=' + machine)
 
 includes = [
             "./",
