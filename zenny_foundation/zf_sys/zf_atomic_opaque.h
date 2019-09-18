@@ -418,3 +418,14 @@ extern bool zf_opaque_atomic_compare_exchange_long(volatile struct ZFOpaqueAtomi
 
 #endif /* zf_atomic_opaque_h */
 
+
+// MARK: other synchronization relevant
+
+/// Atomically lock for opaque atomic type
+/// @param lock a pointer to atomic_flag instance
+extern void zf_lock_opaque(volatile struct ZFOpaqueAtomicType *lock);
+
+/// Atomically unlock for opaque atomic type
+/// @param lock a pointer to atomic_flag instance
+extern void zf_unlock_opaque(volatile struct ZFOpaqueAtomicType *lock);
+

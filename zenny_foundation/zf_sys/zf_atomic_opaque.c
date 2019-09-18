@@ -261,3 +261,25 @@ bool zf_opaque_atomic_compare_exchange_long(volatile struct ZFOpaqueAtomicType *
 
 #endif
 
+
+// MARK: other synchronization relevant
+
+void zf_lock_opaque(volatile struct ZFOpaqueAtomicType *lock)
+{
+    int lockCount = 0;
+    while(zf_opaque_atomic_flag_test_and_set(lock))
+    {
+        zf_cpu_pause();
+        if(++lockCount == ZF_SPIN_LOCK_TRY_COUNT)
+        {
+            lockCount = 0;
+            zf_nap();
+        }
+    }
+}
+
+void zf_unlock_opaque(volatile struct ZFOpaqueAtomicType *lock)
+{
+    zf_opaque_atomic_flag_clear(lock);
+}
+

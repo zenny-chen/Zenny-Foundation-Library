@@ -13,11 +13,44 @@
 // Windows platforms
 #include <Windows.h>
 
+static inline void zf_nap(void)
+{
+    Sleep(1);
+}
+
 #else
 // Unix-like platforms
 #include <unistd.h>
 
+/// Let the current thread briefly sleep and make another thread run
+static inline void zf_nap(void)
+{
+    usleep(10);
+}
+
 #endif // #ifdef _WIN32
+
+
+#define ZF_SPIN_LOCK_TRY_COUNT       100
+
+/// CPU Pause. This is a hint that indicates CPU to temporarily
+/// pause the current running thread.
+static inline void zf_cpu_pause(void)
+{
+#if defined(__x86__) || defined(__i386__) || defined(__x86_64__)
+    asm("pause");
+#elif defined(__arm__)
+    
+#if defined(__ARM_ARCH_7__) || defined(__ARM_ARCH_7A__) || defined(__ARM_ARCH_7R__) || defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7S__)
+    asm("yield");
+#endif
+
+#elif defined(__aarch64__)
+    asm("yield");
+#else
+    // For other CPU architectures, do nothing here...
+#endif
+}
 
 
 #include <stdio.h>
