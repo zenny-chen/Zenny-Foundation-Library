@@ -63,6 +63,8 @@ srcs = [
         "zenny_foundation/zf_single_link_table.c",
         
         "zenny_foundation/zf_sys/zf_atomic.c",
+        # zf_atomic_opaque.c is optional for C, but maybe necessary for Objective-C
+        "zenny_foundation/zf_sys/zf_atomic_opaque.c",
         "zenny_foundation/zf_sys/zf_sync.c",
         "zenny_foundation/zf_sys/zf_uchar.c",
         "zenny_foundation/zf_sys/zf_directory.c"
