@@ -19,6 +19,12 @@
 #include <stdint.h>
 #include <uchar.h>
 
+#define ATOMIC_BOOL_LOCK_FREE   2
+#define ATOMIC_CHAR_LOCK_FREE   2
+#define ATOMIC_SHORT_LOCK_FREE  2
+#define ATOMIC_INT_LOCK_FREE    2
+#define ATOMIC_LLONG_LOCK_FREE  2
+
 #define ATOMIC_VAR_INIT(value)      (value)
 #define atomic_init(object, value)  (void)(*(object) = (value))
 
