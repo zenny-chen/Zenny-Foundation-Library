@@ -10,7 +10,6 @@
 #define zf_atomic_opaque_h
 
 #include "zf_sys.h"
-#include "zf_atomic.h"
 
 
 /// An opaque atomic type for the environment

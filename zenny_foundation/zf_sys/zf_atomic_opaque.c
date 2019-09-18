@@ -7,6 +7,7 @@
 //
 
 #include "zf_atomic_opaque.h"
+#include "zf_atomic.h"
 
 #ifdef _MSC_VER
 #define _Atomic(type)   type
