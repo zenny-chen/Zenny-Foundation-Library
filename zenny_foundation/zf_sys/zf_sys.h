@@ -12,6 +12,7 @@
 #ifdef _WIN32
 // Windows platforms
 #include <Windows.h>
+#include <intrin.h>
 
 static inline void zf_nap(void)
 {
@@ -33,25 +34,6 @@ static inline void zf_nap(void)
 
 #define ZF_SPIN_LOCK_TRY_COUNT       100
 
-/// CPU Pause. This is a hint that indicates CPU to temporarily
-/// pause the current running thread.
-static inline void zf_cpu_pause(void)
-{
-#if defined(__x86__) || defined(__i386__) || defined(__x86_64__)
-    asm("pause");
-#elif defined(__arm__)
-    
-#if defined(__ARM_ARCH_7__) || defined(__ARM_ARCH_7A__) || defined(__ARM_ARCH_7R__) || defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7S__)
-    asm("yield");
-#endif
-
-#elif defined(__aarch64__)
-    asm("yield");
-#else
-    // For other CPU architectures, do nothing here...
-#endif
-}
-
 
 #include <stdio.h>
 #include <stddef.h>
@@ -68,6 +50,25 @@ static inline void zf_cpu_pause(void)
 
 #define thread_local        _Thread_local
 
+/// CPU Pause. This is a hint that indicates CPU to temporarily
+/// pause the current running thread.
+static inline void zf_cpu_pause(void)
+{
+#if defined(__x86__) || defined(__i386__) || defined(__x86_64__)
+    asm("pause");
+#elif defined(__arm__)
+
+#if defined(__ARM_ARCH_7__) || defined(__ARM_ARCH_7A__) || defined(__ARM_ARCH_7R__) || defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7S__)
+    asm("yield");
+#endif
+
+#elif defined(__aarch64__)
+    asm("yield");
+#else
+    // For other CPU architectures, do nothing here...
+#endif
+}
+
 #else
 // For MSVC
 
@@ -80,6 +81,19 @@ static inline void zf_cpu_pause(void)
 
 /// signed size_t type which may be used in this foundation library
 typedef ptrdiff_t           ssize_t;
+
+/// CPU Pause. This is a hint that indicates CPU to temporarily
+/// pause the current running thread.
+static inline void zf_cpu_pause(void)
+{
+#if defined(_M_IX86) || defined(_M_X64)
+    _mm_pause();
+
+#elif defined(_M_ARM64)
+    __yield();
+
+#endif
+}
 
 #endif  // #ifndef _MSC_VER
 

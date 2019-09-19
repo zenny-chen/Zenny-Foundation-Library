@@ -23,7 +23,14 @@
 #define ATOMIC_CHAR_LOCK_FREE   2
 #define ATOMIC_SHORT_LOCK_FREE  2
 #define ATOMIC_INT_LOCK_FREE    2
+
+// Only 64-bit architectures support 64-bit atomic operations
+#if defined(_M_ARM64) || defined(_M_X64)
 #define ATOMIC_LLONG_LOCK_FREE  2
+#else
+#define ATOMIC_LLONG_LOCK_FREE  1
+#endif
+
 
 #define ATOMIC_VAR_INIT(value)      (value)
 #define atomic_init(object, value)  (void)(*(object) = (value))
