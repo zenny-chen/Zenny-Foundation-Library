@@ -363,13 +363,82 @@ static void noreturn MyExit(void)
 
 int main(int argc, const char* argv[])
 {
-    struct ZFOpaqueAtomicType atomInt = { 0 };
-    zf_opaque_atomic_store_int(&atomInt, 20);
-    int a = zf_opaque_atomic_load_int(&atomInt);
-    printf("a = %d\n", a);
+    struct ZFOpaqueAtomicType flag = { 0 };
+    if (!zf_opaque_atomic_flag_test_and_set(&flag))
+        puts("Enter the critical section!");
 
-    a = zf_opaque_atomic_fetch_add_int(&atomInt, 5);
-    printf("a = %d, atomInt = %d\n", a, zf_opaque_atomic_load_int(&atomInt));
+    if (zf_opaque_atomic_flag_test_and_set(&flag))
+        puts("Already in critical section!");
+
+    zf_opaque_atomic_flag_clear(&flag);
+
+    zf_lock_opaque(&flag);
+    zf_unlock_opaque(&flag);
+
+    volatile struct ZFOpaqueAtomicType atomInt = { 0 };
+    unsigned value;
+    zf_opaque_atomic_load(&atomInt, &value);
+    printf("The value is: %d\n", value);
+
+    zf_opaque_atomic_store(&atomInt, 2345678900U);
+    zf_opaque_atomic_load(&atomInt, &value);
+    printf("The value is: %u\n", value);
+
+    ssize_t svalue = 98765432, dvalue;
+    zf_opaque_atomic_store(&atomInt, svalue);
+    zf_opaque_atomic_load(&atomInt, &svalue);
+    printf("The value is: %td\n", svalue);
+
+    svalue = zf_opaque_atomic_fetch_add(&atomInt, 12345678);
+    zf_opaque_atomic_load(&atomInt, &dvalue);
+    printf("original value = %td, value = %lld\n", svalue, (long long)dvalue);
+    zf_opaque_atomic_load(&atomInt, &svalue);
+    printf("After addition, value = %td\n", svalue);
+
+    ptrdiff_t orgValue = zf_opaque_atomic_fetch_sub(&atomInt, 98765432);
+    zf_opaque_atomic_load(&atomInt, &svalue);
+    printf("Org value: %td, After subtraction, value = %td\n", orgValue, svalue);
+    
+    zf_opaque_atomic_store(&atomInt, 0xaaaaaaaaU);
+    value = zf_opaque_atomic_fetch_or(&atomInt, 0x55555555U);
+    printf("original value: %.8X, value = %.8X\n", value, zf_opaque_atomic_load_int(&atomInt));
+
+    zf_opaque_atomic_store(&atomInt, 0xccccccccU);
+    value = zf_opaque_atomic_fetch_xor(&atomInt, 0xaaaaaaaaU);
+    printf("original value: %.8X, value = %.8X\n", value, zf_opaque_atomic_load_int(&atomInt));
+
+    zf_opaque_atomic_store(&atomInt, 0xaaaaaaaaU);
+    value = zf_opaque_atomic_fetch_and(&atomInt, 0x55555555U);
+    printf("original value: %.8X, value = %.8X\n", value, zf_opaque_atomic_load_int(&atomInt));
+    
+
+    value = zf_opaque_atomic_exchange(&atomInt, 1);
+    zf_opaque_atomic_load(&atomInt, &svalue);
+    printf("original value is: %u, new value is: %zd\n", value, svalue);
+
+    if (value >= 0)
+        zf_opaque_atomic_load(&atomInt, &value);
+    else
+        puts("Wow!!");
+
+    if (value > 0)
+        zf_opaque_atomic_store(&atomInt, value);
+    else
+        puts("Oooof!!");
+
+    if (zf_opaque_atomic_compare_exchange(&atomInt, &value, 100))
+    {
+        zf_opaque_atomic_load(&atomInt, &svalue);
+        printf("OK!! value = %d, atomic = %td\n", value, svalue);
+    }
+
+    if (!zf_opaque_atomic_compare_exchange(&atomInt, &value, 0))
+        puts("Not equal!");
+
+    if (zf_opaque_atomic_compare_exchange(&atomInt, &svalue, 0))
+        puts("Equal!");
+
+    puts("\n--------\n");
 
     // insert code here...
     const char16_t* sourceStr = u"你好，世界！Hello, world!";
@@ -404,8 +473,8 @@ int main(int argc, const char* argv[])
     atomic_int aa;
     atomic_init(&aa, 10);
     atomic_store(&aa, 20);
-    const int orgValue = atomic_fetch_add(&aa, 5);
-    printf("orgValue = %d, current value = %d\n", orgValue, atomic_load(&aa));
+    const int orgVal = atomic_fetch_add(&aa, 5);
+    printf("orgValue = %d, current value = %d\n", orgVal, atomic_load(&aa));
 
     puts("Hello, World!\n\nInput 'exit' to exit the program; Otherwise to test...\n");
 
