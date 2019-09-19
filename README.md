@@ -12,5 +12,5 @@ Clang v3.8 or later
 
 If you're using Windows platform, Windows 10 is preferred. If you compile the project with GCC or Clang, just use `-std=gnu11` compile option.
 
-If you're using Visual Studio IDE, add the following include directory to your project: `$(LocalDebuggerWorkingDirectory)\zenny_foundation;$(LocalDebuggerWorkingDirectory)\zenny_foundation\zf_sys;`
+If you're using Visual Studio IDE, add the following include directory to your project: `$(LocalDebuggerWorkingDirectory)\zenny_foundation;$(LocalDebuggerWorkingDirectory)\zenny_foundation\zf_sys;` 
 Also, you should add `_CRT_SECURE_NO_WARNINGS` in the preprocessing definitions. 
