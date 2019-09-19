@@ -25,7 +25,7 @@
 #define ATOMIC_INT_LOCK_FREE    2
 
 // Only 64-bit architectures support 64-bit atomic operations
-#if defined(_M_ARM64) || defined(_M_X64) || defined(__aarch64__) || defined(__x86_64__)
+#if defined(_WIN64) || __LP64__ != 0
 #define ATOMIC_LLONG_LOCK_FREE  2
 #else
 #define ATOMIC_LLONG_LOCK_FREE  1
