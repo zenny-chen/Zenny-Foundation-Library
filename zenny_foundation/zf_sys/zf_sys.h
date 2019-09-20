@@ -123,7 +123,7 @@ static inline void zf_cpu_pause(void)
 
 #define printf(...)     syslog(LOG_INFO, __VA_ARGS__)
 
-#define puts(cstr)      printf("%s\n", cstr)
+#define puts(cstr)      printf("%s\n", (cstr))
 
 #endif  // #ifdef __ANDROID__
 
