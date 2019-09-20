@@ -41,6 +41,7 @@ static inline void zf_nap(void)
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
 #ifndef _MSC_VER
 // Compilers that support most of C11
