@@ -8,6 +8,7 @@
 
 #include "zf_atomic_opaque.h"
 #include "zf_atomic.h"
+#include <assert.h>
 
 #ifdef _MSC_VER
 #define _Atomic(type)   type
@@ -28,7 +29,7 @@ void zf_opaque_atomic_flag_clear(volatile struct ZFOpaqueAtomicType *object)
 
 // MARK: atomic_bool available
 
-#if defined(ATOMIC_BOOL_LOCK_FREE) && ATOMIC_BOOL_LOCK_FREE == 2
+#if ATOMIC_BOOL_LOCK_FREE == 2
 
 // atomic load operation
 bool zf_opaque_atomic_load_bool(volatile struct ZFOpaqueAtomicType *object)
@@ -46,7 +47,7 @@ void zf_opaque_atomic_store_bool(volatile struct ZFOpaqueAtomicType *object, boo
 
 // MARK: atomic_char available
 
-#if defined(ATOMIC_CHAR_LOCK_FREE) && ATOMIC_CHAR_LOCK_FREE == 2
+#if ATOMIC_CHAR_LOCK_FREE == 2
 
 // atomic load operation
 int8_t zf_opaque_atomic_load_byte(volatile struct ZFOpaqueAtomicType *object)
@@ -107,7 +108,7 @@ bool zf_opaque_atomic_compare_exchange_byte(volatile struct ZFOpaqueAtomicType *
 
 // MARK: atomic_short available
 
-#if defined(ATOMIC_SHORT_LOCK_FREE) && ATOMIC_SHORT_LOCK_FREE == 2
+#if ATOMIC_SHORT_LOCK_FREE == 2
 
 int16_t zf_opaque_atomic_load_short(volatile struct ZFOpaqueAtomicType *object)
 {
@@ -159,7 +160,7 @@ bool zf_opaque_atomic_compare_exchange_short(volatile struct ZFOpaqueAtomicType 
 
 // MARK: atomic_int available
 
-#if defined(ATOMIC_INT_LOCK_FREE) && ATOMIC_INT_LOCK_FREE == 2
+#if ATOMIC_INT_LOCK_FREE == 2
 
 int32_t zf_opaque_atomic_load_int(volatile struct ZFOpaqueAtomicType *object)
 {
@@ -211,17 +212,29 @@ bool zf_opaque_atomic_compare_exchange_int(volatile struct ZFOpaqueAtomicType *o
 
 // MARK: atomic_llong available
 
-#if defined(ATOMIC_LLONG_LOCK_FREE) && ATOMIC_LLONG_LOCK_FREE == 2
-
 int64_t zf_opaque_atomic_load_long(volatile struct ZFOpaqueAtomicType *object)
 {
+#if ATOMIC_LLONG_LOCK_FREE == 2
     return atomic_load((volatile _Atomic(int64_t)*)object);
+#else
+    puts("Current environment does not support 64-bit atomic operations!");
+    assert(false);
+    return 0;
+#endif
 }
 
 void zf_opaque_atomic_store_long(volatile struct ZFOpaqueAtomicType *object, int64_t value)
 {
+#if ATOMIC_LLONG_LOCK_FREE == 2
     atomic_store((volatile _Atomic(int64_t)*)object, value);
+#else
+    puts("Current environment does not support 64-bit atomic operations!");
+    assert(false);
+#endif
 }
+
+
+#if ATOMIC_LLONG_LOCK_FREE == 2
 
 int64_t zf_opaque_atomic_fetch_add_long(volatile struct ZFOpaqueAtomicType *object, int64_t value)
 {

@@ -66,8 +66,6 @@ extern int32_t zf_opaque_atomic_load_int(volatile struct ZFOpaqueAtomicType *obj
 /// @return the boolean value
 extern int64_t zf_opaque_atomic_load_long(volatile struct ZFOpaqueAtomicType *object);
 
-#if defined(ATOMIC_LLONG_LOCK_FREE) && ATOMIC_LLONG_LOCK_FREE == 2
-
 #define zf_opaque_atomic_load(object, pValue)   if((object) != NULL && (pValue) != NULL) { \
         switch(sizeof(*(pValue))) {                                         \
         case 1:             \
@@ -86,26 +84,6 @@ extern int64_t zf_opaque_atomic_load_long(volatile struct ZFOpaqueAtomicType *ob
         }                   \
     }                       \
     else
-
-#else
-
-#define zf_opaque_atomic_load(object, pValue)   if((object) != NULL && (pValue) != NULL) { \
-        switch(sizeof(*(pValue))) {                                         \
-        case 1:             \
-            *(int8_t*)(pValue) = zf_opaque_atomic_load_byte(object);        \
-            break;          \
-        case 2:             \
-            *(int16_t*)(pValue) = zf_opaque_atomic_load_short(object);      \
-            break;          \
-        case 4:             \
-        default:            \
-            *(int32_t*)(pValue) = zf_opaque_atomic_load_int(object);        \
-            break;          \
-        }                   \
-    }                       \
-    else
-
-#endif
 
 // MARK: atomic store operations
 
@@ -134,8 +112,6 @@ extern void zf_opaque_atomic_store_int(volatile struct ZFOpaqueAtomicType *objec
 /// @param value the 8-byte value that'll be stored
 extern void zf_opaque_atomic_store_long(volatile struct ZFOpaqueAtomicType *object, int64_t value);
 
-#if defined(ATOMIC_LLONG_LOCK_FREE) && ATOMIC_LLONG_LOCK_FREE == 2
-
 #define zf_opaque_atomic_store(object, value)   if((object) != NULL) {  \
         switch(sizeof(value)) {     \
         case 1:                     \
@@ -154,26 +130,6 @@ extern void zf_opaque_atomic_store_long(volatile struct ZFOpaqueAtomicType *obje
         }                           \
     }                               \
     else
-
-#else
-
-#define zf_opaque_atomic_store(object, value)   if((object) != NULL) {  \
-        switch(sizeof(value)) {     \
-        case 1:                     \
-            zf_opaque_atomic_store_byte((object), (int8_t)value);       \
-            break;                  \
-        case 2:                     \
-            zf_opaque_atomic_store_short((object), (int16_t)value);     \
-            break;                  \
-        case 4:                     \
-        default:                    \
-            zf_opaque_atomic_store_int((object), (int32_t)value);       \
-            break;                  \
-        }                           \
-    }                               \
-    else
-
-#endif
 
 // MARK: atomic fetch add operations
 
