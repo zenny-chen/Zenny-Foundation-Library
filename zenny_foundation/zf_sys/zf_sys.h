@@ -73,6 +73,20 @@ static inline void zf_cpu_pause(void)
 #else
 // For MSVC
 
+// Memory leak checking in debug mode
+#ifdef _CRTDBG_MAP_ALLOC
+
+#include <crtdbg.h>
+
+#define MSVCDumpMemoryLeaks     _CrtDumpMemoryLeaks
+
+#else
+
+#define MSVCDumpMemoryLeaks()
+
+#endif
+
+
 #define alignof             _Alignof
 #define alignas(nBytes)     __declspec(align(nBytes))
 
