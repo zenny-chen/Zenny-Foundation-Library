@@ -125,7 +125,8 @@ static inline void zf_cpu_pause(void)
 
 #define puts(cstr)      printf("%s\n", (cstr))
 
-#endif  // #ifdef __ANDROID__
+#else
+// For other platforms
 
 /// Gets a whole line from the stdin stream, excluding the last newline character.
 /// @param buffer the buffer that stores the input string
@@ -171,6 +172,8 @@ static inline ssize_t zf_get_console_line(char* buffer, size_t maxBufferSize)
 
 #endif
 }
+
+#endif  // #ifdef __ANDROID__
 
 #endif /* zf_sys_h */
 
