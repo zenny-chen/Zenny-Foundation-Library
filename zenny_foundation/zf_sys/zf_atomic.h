@@ -178,7 +178,7 @@ extern bool zenny_atomic_compare_exchange16(volatile atomic_short *object, int16
 extern bool zenny_atomic_compare_exchange32(volatile atomic_long *object, int32_t *expected, int32_t desired);
 extern bool zenny_atomic_compare_exchange64(volatile atomic_llong *object, int64_t *expected, int64_t desired);
 
-#endif  // #ifdef _WIN32
+#endif  // #ifdef __GNUC__
 
 #endif /* zf_atomic_h */
 
