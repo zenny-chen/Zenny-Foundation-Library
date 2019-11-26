@@ -9,7 +9,7 @@
 #ifndef zf_atomic_h
 #define zf_atomic_h
 
-#ifndef _WIN32
+#ifdef __GNUC__
 // Unix-like OS environment
 #include <stdatomic.h>
 
@@ -35,13 +35,8 @@
 #define ATOMIC_VAR_INIT(value)      (value)
 #define atomic_init(object, value)  (void)(*(object) = (value))
 
-#ifdef __GNUC__
-#define atomic_store(object, desired)   (void)( *(volatile typeof(*(object)) *)(object) = (desired) )
-#define atomic_load(object)             *(volatile typeof(*(object)) *)(object)
-#else
 #define atomic_store(object, desired)   (void)(*(object) = (desired))
 #define atomic_load(object)             *(object)
-#endif
 
 #define ATOMIC_FLAG_INIT { 0 }
 
