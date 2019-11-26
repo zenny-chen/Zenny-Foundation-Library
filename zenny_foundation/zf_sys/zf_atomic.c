@@ -6,7 +6,7 @@
 //  Copyright © 2018 CodeLearning Studio. All rights reserved.
 //
 
-#ifdef _WIN32
+#ifndef __GNUC__
 
 #include "zf_atomic.h"
 #include "zf_sys.h"
@@ -291,5 +291,5 @@ void atomic_flag_clear_explicit(volatile atomic_flag* object, memory_order order
     atomic_flag_clear(object);
 }
 
-#endif  // #ifdef _WIN32
+#endif  // #ifndef __GNUC__
 
