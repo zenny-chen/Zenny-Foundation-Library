@@ -88,8 +88,8 @@ union ZFNumberValueType
     char16_t u;
     int16_t s;
     uint16_t S;
-    int32_t i;
-    uint32_t I;
+    int32_t n;
+    uint32_t N;
     int64_t l;
     uint64_t L;
     ptrdiff_t t;
@@ -135,8 +135,8 @@ struct ZFNumber
                                 char : (value.c = (num), encoding = ZF_NUMBER_ENCODING_CHAR), \
                                 int16_t : (value.s = (num), encoding = ZF_NUMBER_ENCODING_SHORT), \
                                 uint16_t : (value.S = (num), encoding = ZF_NUMBER_ENCODING_USHORT), \
-                                int32_t : (value.i = (num), encoding = ZF_NUMBER_ENCODING_INT), \
-                                uint32_t : (value.I = (num), encoding = ZF_NUMBER_ENCODING_UINT), \
+                                int32_t : (value.n = (num), encoding = ZF_NUMBER_ENCODING_INT), \
+                                uint32_t : (value.N = (num), encoding = ZF_NUMBER_ENCODING_UINT), \
                                 int64_t : (value.l = (num), encoding = ZF_NUMBER_ENCODING_LONG), \
                                 uint64_t : (value.L = (num), encoding = ZF_NUMBER_ENCODING_ULONG), \
                                 float : (value.f = (num), encoding = ZF_NUMBER_ENCODING_FLOAT), \
@@ -155,8 +155,8 @@ struct ZFNumber
                                 char : (numObj)->value.c, \
                                 int16_t : (numObj)->value.s, \
                                 uint16_t : (numObj)->value.S, \
-                                int32_t : (numObj)->value.i, \
-                                uint32_t : (numObj)->value.I, \
+                                int32_t : (numObj)->value.n, \
+                                uint32_t : (numObj)->value.N, \
                                 int64_t : (numObj)->value.l, \
                                 uint64_t : (numObj)->value.L, \
                                 float : (numObj)->value.f, \

@@ -70,11 +70,11 @@ void ZFConvertNumberToUTF8String(const struct ZFNumber *numObj, char dstBuffer[6
             break;
             
         case ZF_NUMBER_ENCODING_INT:
-            sprintf(dstBuffer, "%d", value.i);
+            sprintf(dstBuffer, "%d", value.n);
             break;
             
         case ZF_NUMBER_ENCODING_UINT:
-            sprintf(dstBuffer, "%u", value.I);
+            sprintf(dstBuffer, "%u", value.N);
             break;
             
         case ZF_NUMBER_ENCODING_LONG:
