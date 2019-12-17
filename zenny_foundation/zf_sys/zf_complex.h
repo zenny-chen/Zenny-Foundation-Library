@@ -1,0 +1,97 @@
+//
+//  zf_complex.h
+//  ZennyFoundationTest
+//
+//  Created by Zenny Chen on 2019/12/14.
+//  Copyright © 2019 Zenny Chen. All rights reserved.
+//
+
+#ifndef zf_complex_h
+#define zf_complex_h
+
+#include <complex.h>
+
+#ifdef _WIN32
+// For MSVC and Clang in Visual Studio
+
+#else
+// For GCC and Clang in Unix-like systems
+
+// Complex types
+typedef float complex           zf_float_complex;
+typedef double complex          zf_double_complex;
+typedef long double complex     zf_ldouble_complex;
+
+// Construct a complex number object
+#define ZF_FLOAT_COMPLEX(real, imag)        CMPLXF((real), (imag))
+#define ZF_DOUBLE_COMPLEX(real, imag)       CMPLX((real), (imag))
+#define ZF_LONG_DOUBLE_COMPLEX(real, imag)  CMPLXL((real), (imag))
+
+// complex add
+static inline zf_float_complex zf_caddf(zf_float_complex a, zf_float_complex b)
+{
+    return a + b;
+}
+
+static inline zf_double_complex zf_cadd(zf_double_complex a, zf_double_complex b)
+{
+    return a + b;
+}
+
+static inline zf_ldouble_complex zf_caddl(zf_ldouble_complex a, zf_ldouble_complex b)
+{
+    return a + b;
+}
+
+// complex sub
+static inline zf_float_complex zf_csubf(zf_float_complex a, zf_float_complex b)
+{
+    return a - b;
+}
+
+static inline zf_double_complex zf_csub(zf_double_complex a, zf_double_complex b)
+{
+    return a - b;
+}
+
+static inline zf_ldouble_complex zf_csubl(zf_ldouble_complex a, zf_ldouble_complex b)
+{
+    return a - b;
+}
+
+// complex mul
+static inline zf_float_complex zf_cmulf(zf_float_complex a, zf_float_complex b)
+{
+    return a * b;
+}
+
+static inline zf_double_complex zf_cmul(zf_double_complex a, zf_double_complex b)
+{
+    return a * b;
+}
+
+static inline zf_ldouble_complex zf_cmull(zf_ldouble_complex a, zf_ldouble_complex b)
+{
+    return a * b;
+}
+
+// complex div
+static inline zf_float_complex zf_cdivf(zf_float_complex a, zf_float_complex b)
+{
+    return a / b;
+}
+
+static inline zf_double_complex zf_cdiv(zf_double_complex a, zf_double_complex b)
+{
+    return a / b;
+}
+
+static inline zf_ldouble_complex zf_cdivl(zf_ldouble_complex a, zf_ldouble_complex b)
+{
+    return a / b;
+}
+
+#endif  // #ifdef _WIN32
+
+#endif /* zf_complex_h */
+
