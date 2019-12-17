@@ -12,6 +12,9 @@
 #include "zenny_foundation/zenny_foundation_api.h"
 #include "zenny_foundation/zf_sys/zf_directory.h"
 #include "zenny_foundation/zf_sys/zf_sys.h"
+#include "zenny_foundation/zf_sys/zf_atomic_opaque.h"
+#include "zenny_foundation/zf_sys/zf_complex.h"
+
 
 static noreturn void Goodbye(void)
 {
@@ -213,7 +216,7 @@ static void MemoryProfileTest(void)
     obj->data = -100;
     
     struct ZFNumber *num = NULL;
-    ZF_CREATE_NUMBER(num, (union ZFNumberValueType){.i = -550}, ZF_NUMBER_ENCODING_INT);
+    ZF_CREATE_NUMBER(num, (union ZFNumberValueType){.n = -550}, ZF_NUMBER_ENCODING_INT);
     ZF_RELEASE_OBJECT(num); // TEST
     
     ZF_CREATE_NUMBER(num, (union ZFNumberValueType)90U, ZF_NUMBER_ENCODING_UINT);
@@ -290,6 +293,18 @@ static void CharacterTest(void)
     printf("The UTF-16 length is: %zu\n", length);
 }
 
+static void ComplexTest(void)
+{
+    zf_float_complex a = ZF_FLOAT_COMPLEX(3.0f, 2.0f);
+    zf_float_complex b = ZF_FLOAT_COMPLEX(2.0f, -1.0f);
+    a = zf_caddf(a, b);
+    a = zf_csubf(a, b);
+    a = ZF_FLOAT_COMPLEX(3.0f, 2.0f);
+    zf_float_complex c = zf_cmulf(a, b);
+    c = zf_cdivf(c, b);
+    printf("c.real = %.1f, c.imag = %.1f\n", creal(c), cimag(c));
+}
+
 static void SystemTest(void)
 {
     let currDir = zf_get_current_exec_path();
@@ -304,6 +319,10 @@ static void SystemTest(void)
 
 int main(int argc, const char* argv[])
 {
+    volatile struct ZFOpaqueAtomicType atom = { 0 };
+    zf_lock_opaque(&atom);
+    zf_unlock_opaque(&atom);
+    
     int array[] = { 1, 2, 3, 4, 5 };
     const ssize_t count = zf_countof(array);
     printf("The count of array is: %zd\n", count);
@@ -332,6 +351,10 @@ int main(int argc, const char* argv[])
         puts("----------------\n");
         
         CharacterTest();
+        
+        puts("----------------\n");
+        
+        ComplexTest();
         
         puts("----------------\n");
         
