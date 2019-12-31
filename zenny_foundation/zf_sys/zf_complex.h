@@ -14,6 +14,64 @@
 #ifdef _WIN32
 // For MSVC and Clang in Visual Studio
 
+// Complex types
+typedef _Fcomplex               zf_float_complex;
+typedef _Dcomplex               zf_double_complex;
+typedef _C_ldouble_complex      zf_ldouble_complex;
+
+// Construct a complex number object
+#define ZF_FLOAT_COMPLEX(real, imag)        _FCOMPLEX_((real), (imag))
+#define ZF_DOUBLE_COMPLEX(real, imag)       _DCOMPLEX_((real), (imag))
+#define ZF_LONG_DOUBLE_COMPLEX(real, imag)  _LCOMPLEX_((real), (imag))
+
+// complex add
+static inline zf_float_complex zf_caddf(zf_float_complex a, zf_float_complex b)
+{
+    return ZF_FLOAT_COMPLEX(a._Val[0] + b._Val[0], a._Val[1] + b._Val[1]);
+}
+
+static inline zf_double_complex zf_cadd(zf_double_complex a, zf_double_complex b)
+{
+    return ZF_DOUBLE_COMPLEX(a._Val[0] + b._Val[0], a._Val[1] + b._Val[1]);
+}
+
+static inline zf_ldouble_complex zf_caddl(zf_ldouble_complex a, zf_ldouble_complex b)
+{
+    return ZF_LONG_DOUBLE_COMPLEX(a._Val[0] + b._Val[0], a._Val[1] + b._Val[1]);
+}
+
+// complex sub
+static inline zf_float_complex zf_csubf(zf_float_complex a, zf_float_complex b)
+{
+    return ZF_FLOAT_COMPLEX(a._Val[0] - b._Val[0], a._Val[1] - b._Val[1]);
+}
+
+static inline zf_double_complex zf_csub(zf_double_complex a, zf_double_complex b)
+{
+    return ZF_DOUBLE_COMPLEX(a._Val[0] - b._Val[0], a._Val[1] - b._Val[1]);
+}
+
+static inline zf_ldouble_complex zf_csubl(zf_ldouble_complex a, zf_ldouble_complex b)
+{
+    return ZF_LONG_DOUBLE_COMPLEX(a._Val[0] - b._Val[0], a._Val[1] - b._Val[1]);
+}
+
+// complex mul
+static inline zf_float_complex zf_cmulf(zf_float_complex a, zf_float_complex b)
+{
+    return ZF_FLOAT_COMPLEX(a._Val[0] * b._Val[0] - a._Val[1] * b._Val[1], a._Val[0] * b._Val[1] + a._Val[1] * b._Val[0]);
+}
+
+static inline zf_double_complex zf_cmul(zf_double_complex a, zf_double_complex b)
+{
+    return ZF_DOUBLE_COMPLEX(a._Val[0] * b._Val[0] - a._Val[1] * b._Val[1], a._Val[0] * b._Val[1] + a._Val[1] * b._Val[0]);
+}
+
+static inline zf_ldouble_complex zf_cmull(zf_ldouble_complex a, zf_ldouble_complex b)
+{
+    return ZF_LONG_DOUBLE_COMPLEX(a._Val[0] * b._Val[0] - a._Val[1] * b._Val[1], a._Val[0] * b._Val[1] + a._Val[1] * b._Val[0]);
+}
+
 #else
 // For GCC and Clang in Unix-like systems
 
