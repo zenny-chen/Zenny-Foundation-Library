@@ -98,7 +98,7 @@ static inline zf_ldouble_complex zf_cdivl(zf_ldouble_complex a, zf_ldouble_compl
 }
 
 #else
-// For GCC and Clang in Unix-like systems
+// For GCC and Clang on Unix-like systems
 
 // Complex types
 typedef float complex           zf_float_complex;
