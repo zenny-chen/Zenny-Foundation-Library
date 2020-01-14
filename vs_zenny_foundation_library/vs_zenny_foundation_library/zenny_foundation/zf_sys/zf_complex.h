@@ -105,6 +105,10 @@ typedef float complex           zf_float_complex;
 typedef double complex          zf_double_complex;
 typedef long double complex     zf_ldouble_complex;
 
+// Access real part and imaginary part
+#define zf_complex_real_part    __real__
+#define zf_complex_imag_part    __imag__
+
 // Construct a complex number object
 #define ZF_FLOAT_COMPLEX(real, imag)        CMPLXF((real), (imag))
 #define ZF_DOUBLE_COMPLEX(real, imag)       CMPLX((real), (imag))
