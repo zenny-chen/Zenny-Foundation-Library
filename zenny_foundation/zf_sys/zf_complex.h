@@ -19,6 +19,10 @@ typedef _Fcomplex               zf_float_complex;
 typedef _Dcomplex               zf_double_complex;
 typedef _C_ldouble_complex      zf_ldouble_complex;
 
+// Access real part and imaginary part
+#define zf_complex_real_part(comp)    (comp)._Val[0]
+#define zf_complex_imag_part(comp)    (comp)._Val[1]
+
 // Construct a complex number object
 #define ZF_FLOAT_COMPLEX(real, imag)        _FCOMPLEX_((real), (imag))
 #define ZF_DOUBLE_COMPLEX(real, imag)       _DCOMPLEX_((real), (imag))
