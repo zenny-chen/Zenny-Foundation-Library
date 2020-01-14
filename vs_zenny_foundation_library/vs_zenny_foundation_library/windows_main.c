@@ -368,7 +368,13 @@ static void ComplexTest(void)
     zf_float_complex b = ZF_FLOAT_COMPLEX(2.0f, -1.0f);
 
     zf_float_complex c = zf_cmulf(a, b);
-    c = zf_cdivf(a, b);
+    c = zf_cdivf(c, b);
+
+    printf("The complex number c is: %.1f + %.1fi\n", crealf(c), cimagf(c));
+
+    zf_complex_real_part(c) += 1.0f;
+    zf_complex_imag_part(c) -= 1.0f;
+    printf("The complex number c is: %.1f + %.1fi\n", crealf(c), cimagf(c));
 }
 
 int main(int argc, const char* argv[])
