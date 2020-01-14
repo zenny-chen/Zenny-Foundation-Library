@@ -303,6 +303,10 @@ static void ComplexTest(void)
     zf_float_complex c = zf_cmulf(a, b);
     c = zf_cdivf(c, b);
     printf("c.real = %.1f, c.imag = %.1f\n", creal(c), cimag(c));
+    
+    zf_complex_real_part(c) += 1.0f;
+    zf_complex_imag_part(c) -= 1.0f;
+    printf("c.real = %.1f, c.imag = %.1f\n", creal(c), cimag(c));
 }
 
 static void SystemTest(void)
