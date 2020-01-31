@@ -73,6 +73,8 @@ static inline void zf_cpu_pause(void)
 #else
 // For MSVC
 
+#define restrict            __restrict
+
 #define alignof             _Alignof
 #define alignas(nBytes)     __declspec(align(nBytes))
 
